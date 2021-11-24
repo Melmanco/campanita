@@ -1,6 +1,15 @@
 const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
+const multer = require('multer');
+const mimeTypes = require('mime-types');
+
+const storage = multer.diskStorage({
+    destination: 'uploads/',
+    filename: function(req,file,cb){
+        cb("",Date.now() + "." + mimeTypes.extension(file.mimetype));
+    }
+})
 
 const app = express();
 
@@ -14,6 +23,10 @@ const db = mysql.createConnection({
 });
 
 const PORT = process.env.PORT || 8080;
+
+const upload = multer({
+    storage: storage
+})
 
 app.post('/login', (req, res) => {
     const username = req.body.username;
@@ -38,5 +51,9 @@ app.post('/login', (req, res) => {
         }
     );
 });
+
+app.post("/files", upload.single('new_file'), (req,res) =>{
+
+})
 
 app.listen(PORT, console.log(`Server started on port ${PORT}`));

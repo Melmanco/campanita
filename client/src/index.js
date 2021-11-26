@@ -5,10 +5,15 @@ import App from './App';
 import Files from './pages/files/Files';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Navbar from './pages/files/Navbar';
+import { Header } from './componentes/Header';
+
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
+    <Header/>
+    <Navbar/>
       <Routes>
         <Route path='/' element={<App/>}/>
         <Route path='/files' element={<Files/>}/>

@@ -3,7 +3,7 @@ import logo from '../img/integra.png';
 import messageButton from '../img/message.png';
 import settingsButton from '../img/settings.png';
 
-export const Header = () => {
+function Header() {
     return (
         <div className = "Files">
             <div className ="Header-nav Padding">
@@ -20,3 +20,5 @@ export const Header = () => {
         </div>
     )
 }
+
+export default Header;

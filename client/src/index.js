@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import Files from './pages/files/Files';
+import Login from './pages/Login';
+import Files from './pages/Files';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Navbar from './pages/files/Navbar';
-import { Header } from './componentes/Header';
+import Navbar from './components/Navbar';
+import Header from './components/Header';
 
 
 ReactDOM.render(
@@ -15,7 +15,7 @@ ReactDOM.render(
     <Header/>
     <Navbar/>
       <Routes>
-        <Route path='/' element={<App/>}/>
+        <Route path='/' element={<Login/>}/>
         <Route path='/files' element={<Files/>}/>
       </Routes>
     </BrowserRouter>

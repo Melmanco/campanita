@@ -10,7 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 
 const locales = {
-    "en-US": require("date-fns/locale/en-US")
+    "es": require("date-fns/locale/es")
 } 
 
 const localizer = dateFnsLocalizer ({
@@ -51,14 +51,14 @@ export function Calendario() {
 
     return (
         <div className="Calendar">
-            <h1>Calendar</h1>
-            <h2>Add New Event</h2>
+            <h1>Calendario</h1>
+            <h2>Añadir nuevo evento</h2>
             <div>
-                <input type="text" placeholder="Add Title" style={{ width: "20%", marginRight: "10px" }} value={newEvent.title} onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} />
-                <DatePicker placeholderText="Start Date" style={{ marginRight: "10px" }} selected={newEvent.start} onChange={(start) => setNewEvent({ ...newEvent, start })} />
-                <DatePicker placeholderText="End Date" selected={newEvent.end} onChange={(end) => setNewEvent({ ...newEvent, end })} />
+                <input type="text" placeholder="Titulo" style={{ width: "20%", marginRight: "10px" }} value={newEvent.title} onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} />
+                <DatePicker placeholderText="Dia inicio" style={{ marginRight: "10px" }} selected={newEvent.start} onChange={(start) => setNewEvent({ ...newEvent, start })} />
+                <DatePicker placeholderText="Dia termino" selected={newEvent.end} onChange={(end) => setNewEvent({ ...newEvent, end })} />
                 <button stlye={{ marginTop: "10px" }} onClick={handleAddEvent}>
-                     Add Event
+                     Añadir evento
                 </button>
             </div>
             <Calendar 

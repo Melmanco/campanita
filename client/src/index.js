@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import Login from './pages/Login';
 import Files from './pages/Files';
+import Contacto from './pages/Contactos';
+import Anuncio from './pages/Anuncios';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -17,6 +19,8 @@ ReactDOM.render(
       <Routes>
         <Route path='/' element={<Login/>}/>
         <Route path='/files' element={<Files/>}/>
+        <Route path='/contacto' element={<Contacto/>}/>
+        <Route path='/anuncios' element= {<Anuncio/>}/>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

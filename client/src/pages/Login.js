@@ -1,35 +1,50 @@
 import React, { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import Axios from 'axios';
 import './Login.css'
+import Logo from '../img/integra.png';
 
-function Login() {
+function Login(props) {
 
-    const [username, setUsername] = useState("");
+    const {loginStatus, setLoginStatus, username, setUsername} = props
     const [password, setPassword] = useState("");
   
-    const login = () => {
+    const login = (e) => {
+      e.preventDefault();
       Axios.post("http://localhost:8080/login", {
         username: username,
         password: password,
       }).then((response) => {
-        console.log(response);
+        if(response.data.message === 'success'){
+          setUsername(username);
+          setLoginStatus(true);
+        }
+        else{
+          setLoginStatus(false);
+        }
       });
     };
 
+    if(loginStatus)
+      return <Navigate to='/home'/>;
+
     return (
-        <div className="Login">
-          <header className="Login-header">
-            <h1>Login</h1>
+        <div className='Login'>
+          <header className='Login-header'>
+            <div class='text-center'>
+              <img src={Logo} class='img-fluid'/>
+            </div>
+            <h1>Iniciar sesión</h1>
             <input 
-              type="text"
-              placeholder="RUT"
+              type='text'
+              placeholder='RUT'
               onChange={(e) => {
                 setUsername(e.target.value);
               }} 
             />
             <input
-              type="password"
-              placeholder="Contraseña"
+              type='password'
+              placeholder='Contraseña'
               onChange={(e) => {
                 setPassword(e.target.value);
               }}

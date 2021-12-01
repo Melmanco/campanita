@@ -42,17 +42,16 @@ app.post('/login', (req, res) => {
             }
 
             if (result.length > 0) {
-                console.log(result);
-                res.send(result);
+                res.send({ message: 'success'});
             } else {
                 console.log('Usuario o contraseña incorrectos');
-                res.send({ message: "Usuario o contraseña incorrectos"});
+                res.send({ message: 'failure'});
             }
         }
     );
 });
 
-app.post("/files", upload.single('new_file'), (req,res) =>{
+app.post('/files', upload.single('new_file'), (req,res) =>{
 
 })
 

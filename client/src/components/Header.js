@@ -3,7 +3,7 @@ import logo from '../img/integra.png';
 import messageButton from '../img/message.png';
 import settingsButton from '../img/settings.png';
 
-function Header() {
+function Header(props) {
     return (
         <div className = "Files">
             <div className ="Header-nav Padding">

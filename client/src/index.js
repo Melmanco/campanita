@@ -1,24 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Login from './pages/Login';
-import Files from './pages/Files';
+import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Header from './components/Header';
-
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-    <Header/>
-    <Navbar/>
-      <Routes>
-        <Route path='/' element={<Login/>}/>
-        <Route path='/files' element={<Files/>}/>
-      </Routes>
-    </BrowserRouter>
+    <App/>
   </React.StrictMode>,
   document.getElementById('root')
 );

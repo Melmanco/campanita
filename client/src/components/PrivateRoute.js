@@ -1,10 +1,10 @@
 import React from 'react';
 import {Route, Navigate} from 'react-router-dom';
 
-function PrivateRoute(children, ...properties) {
-    const {path, loginStatus} = properties
+function PrivateRoute(children, ...props) {
+    const {loginStatus} = props
     if(loginStatus){
-        return <Route path={path}>{children}</Route>
+        return children
     } else{
         return <Navigate to='/login' />
     }   

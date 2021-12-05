@@ -29,27 +29,22 @@ function App() {
                 }
 
                 <Routes>
-                    <Route path='/' element={<PrivateRoute path='/' loginStatus={loginStatus}/>}>
-                        <Route path='/' element=
-                            {<Navigate to='/home'/>}
-                        />
-                    </Route>
 
                     <Route path='/login' element=
                         {<Login loginStatus={loginStatus} setLoginStatus={setLoginStatus} username={username} setUsername={setUsername}/>}
                     />
 
-                    <Route path='/home' element={<PrivateRoute path='/home' loginStatus={loginStatus}/>}>
-                        <Route path='/home' element=
-                            {<Home/>}
-                        />
-                    </Route>
+                    <Route path='/home' element={
+                        <PrivateRoute loginStatus={loginStatus}>
+                            <Home/>
+                        </PrivateRoute>
+                    }/>
 
-                    <Route path='/files' element={<PrivateRoute path='/files' loginStatus={loginStatus}/>}>
-                        <Route path='/files' element=
-                            {<Files username={username}/>}
-                        />
-                    </Route>
+                    <Route path='/files' element={
+                        <PrivateRoute loginStatus={loginStatus}>
+                            <Files/>
+                        </PrivateRoute>
+                    }/>
                 </Routes>
 
             </BrowserRouter>

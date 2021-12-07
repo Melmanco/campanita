@@ -26,6 +26,9 @@ function Navbar() {
                     <Link to='/Contacto' className='nav-link active'>Contacto</Link>
                   </li>
                   
+                  <li className='nav-item'>
+                    <Link to='/Certificado' className='nav-link active'>Certificado</Link>
+                  </li>
                 
                 </ul>
               </div>

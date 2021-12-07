@@ -7,9 +7,8 @@ import PrivateRoute from './components/PrivateRoute';
 import Login from './pages/Login';
 import Files from './pages/Files';
 import Contacto from './pages/Contacto';
-
 import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
-
+import Certificado from './pages/Certificado';
 
 
 function App() {
@@ -48,6 +47,10 @@ function App() {
 
                         <Route path='/Contacto' element=
                             {<Contacto username={username}/>}
+                        />
+                        
+                        <Route path='/Certificado' element=
+                            {<Certificado username={username}/>}
                         />
                 </Routes>
 

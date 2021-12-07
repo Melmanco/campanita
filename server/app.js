@@ -4,6 +4,7 @@ const cors = require('cors');
 const multer = require('multer');
 const mimeTypes = require('mime-types');
 const http = require("http");
+const nodemailer = require("nodemailer");
 const storage = multer.diskStorage({
     destination: 'uploads/',
     filename: function(req,file,cb){
@@ -84,7 +85,48 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/files', upload.single('new_file'), (req,res) =>{
-
 })
+
+app.post("/send-email",(req,res)=>{
+  var transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    post: 465,
+    secure: true,
+    auth:{
+      user: "jardin.campanita.notificaciones@gmail.com",
+      pass: "sceyaqwusmleyrfq",
+    }
+  });
+
+  var notificacionChat = {
+    from: "<jardin.campanita.notificaciones@gmail.com>",
+    to: "diego.c.080808@gmail.com",
+    subject: "Tiene un chat pendiente",
+    text: "¡Hola Mundo!"
+  }
+
+  var notificacionCertificado = {
+    from: "<jardin.campanita.notificaciones@gmail.com>",
+    to: "hristo59@hotmail.cl",
+    subject: "certificado alumno regular",
+    text: "HOLA MUNDO"
+  }
+
+  transporter.sendMail(notificacionChat,(error,info)=>{
+    if(error){
+      res.status(500).send(error.message);
+
+    }
+    else{
+      console.log("Email enviado")
+      res.status(200).jsonp(req.body);
+    }
+  });
+
+
+});
+
+
+
 
 servidor.listen(PORT, console.log(`Server started on port ${PORT}`));

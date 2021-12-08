@@ -107,9 +107,9 @@ app.post("/send-email",(req,res)=>{
 
   var notificacionCertificado = {
     from: "<jardin.campanita.notificaciones@gmail.com>",
-    to: "hristo59@hotmail.cl",
+    to: "felipe.maldonado19@outlook.com",
     subject: "certificado alumno regular",
-    text: "hristo es jei"
+    text: "hola soy melman mas conocido como melmanco"
   }
 
   transporter.sendMail(notificacionCertificado,(error,info)=>{

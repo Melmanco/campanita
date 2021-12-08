@@ -88,41 +88,50 @@ app.post('/files', upload.single('new_file'), (req,res) =>{
 })
 
 app.post("/send-email",(req,res)=>{
-  var transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    post: 465,
-    secure: true,
-    auth:{
-      user: "jardin.campanita.notificaciones@gmail.com",
-      pass: "sceyaqwusmleyrfq",
+
+  db.query(
+    "SELECT nombre FROM usuario WHERE RUT = ?",
+    [username],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.send({err: err});
+      }
+
+      if (result.length > 0) {
+        var transporter = nodemailer.createTransport({
+          host: "smtp.gmail.com",
+          post: 465,
+          secure: true,
+          auth:{
+            user: "jardin.campanita.notificaciones@gmail.com",
+            pass: "sceyaqwusmleyrfq",
+          }
+        });
+      
+        var notificacionCertificado = {
+          from: "<jardin.campanita.notificaciones@gmail.com>",
+          to: "felipe.maldonado19@outlook.com",
+          subject: "Certificado Alumno Regular",
+          text: "El estudiante" + result[0].username + "ha solicitado un certificado de alumno regular." 
+        }
+      
+        transporter.sendMail(notificacionCertificado,(error,info)=>{
+          if(error){
+            res.status(500).send(error.message);
+      
+          }
+          else{
+            console.log("email enviado")
+            res.status(200).jsonp(req.body);
+          }
+        });
+      
+      }
     }
-  });
+  );
 
-  var notificacionChat = {
-    from: "<jardin.campanita.notificaciones@gmail.com>",
-    to: "diego.c.080808@gmail.com",
-    subject: "Tiene un chat pendiente",
-    text: "¡Hola Mundo!"
-  }
-
-  var notificacionCertificado = {
-    from: "<jardin.campanita.notificaciones@gmail.com>",
-    to: "hristo59@hotmail.cl",
-    subject: "certificado alumno regular",
-    text: "hristo es jei"
-  }
-
-  transporter.sendMail(notificacionCertificado,(error,info)=>{
-    if(error){
-      res.status(500).send(error.message);
-
-    }
-    else{
-      console.log("Email enviado")
-      res.status(200).jsonp(req.body);
-    }
-  });
-
+ 
 
 });
 

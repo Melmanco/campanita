@@ -30,7 +30,7 @@ function App() {
 
                 <Routes>
                         <Route path='/' element=
-                            {<Navigate to='/home'/>}
+                            {<Navigate to='/login'/>}
                         />
 
                     <Route path='/login' element=

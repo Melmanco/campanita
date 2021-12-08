@@ -88,7 +88,7 @@ app.post('/files', upload.single('new_file'), (req,res) =>{
 })
 
 app.post("/send-email",(req,res)=>{
-
+  const username = req.body.username
   db.query(
     "SELECT nombre FROM usuario WHERE RUT = ?",
     [username],
@@ -113,7 +113,7 @@ app.post("/send-email",(req,res)=>{
           from: "<jardin.campanita.notificaciones@gmail.com>",
           to: "felipe.maldonado19@outlook.com",
           subject: "Certificado Alumno Regular",
-          text: "El estudiante" + result[0].username + "ha solicitado un certificado de alumno regular." 
+          text: "El estudiante " + result[0].nombre + " ha solicitado un certificado de alumno regular." 
         }
       
         transporter.sendMail(notificacionCertificado,(error,info)=>{

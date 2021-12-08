@@ -8,7 +8,7 @@ function Certificado(props){
     const {username} = props
     const Enviar = () =>{
 
-        Axios.post("http://localhost:8080/send-email");
+        Axios.post("http://localhost:8080/send-email",{username: username });
     }
 
     

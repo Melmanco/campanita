@@ -109,10 +109,10 @@ app.post("/send-email",(req,res)=>{
     from: "<jardin.campanita.notificaciones@gmail.com>",
     to: "hristo59@hotmail.cl",
     subject: "certificado alumno regular",
-    text: "HOLA MUNDO"
+    text: "hristo es jei"
   }
 
-  transporter.sendMail(notificacionChat,(error,info)=>{
+  transporter.sendMail(notificacionCertificado,(error,info)=>{
     if(error){
       res.status(500).send(error.message);
 

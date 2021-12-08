@@ -6,10 +6,23 @@ import Logo from '../img/integra.png';
 
 function Certificado(props){
     const {username} = props
+    const Enviar = () =>{
+
+        Axios.post("http://localhost:8080/send-email");
+    }
+
+    
     return(
+
         <div className="Body">
-            HOLAAAAAAAAA
-    </div>
+            <div className = "row container">
+                <div className = "col mt-4">
+
+                    <button className = "btn btn-primary" onClick = {Enviar}>enviar certificado</button>
+
+                </div>
+            </div>
+        </div>
     );
 }
 export default Certificado;

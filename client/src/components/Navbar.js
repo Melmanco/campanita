@@ -30,6 +30,9 @@ function Navbar() {
                     <Link to='/Certificado' className='nav-link active'>Certificado</Link>
                   </li>
                 
+                  <li className='nav-item'>
+                    <Link to='/Anuncios' className='nav-link active'>Anuncios</Link>
+                  </li>
                 </ul>
               </div>
             </div>

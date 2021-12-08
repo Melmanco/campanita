@@ -9,7 +9,7 @@ import Files from './pages/Files';
 import Contacto from './pages/Contacto';
 import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
 import Certificado from './pages/Certificado';
-
+import Anuncios from './pages/Anuncios';
 
 function App() {
 
@@ -51,6 +51,10 @@ function App() {
                         
                         <Route path='/Certificado' element=
                             {<Certificado username={username}/>}
+                        />
+
+                        <Route path='/Anuncios' element=
+                            {<Anuncios username={username}/>}
                         />
                 </Routes>
 

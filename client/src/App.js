@@ -13,7 +13,7 @@ import Anuncios from './pages/Anuncios';
 
 function App() {
 
-    const [loginStatus, setLoginStatus] = useState(true);
+    const [loginStatus, setLoginStatus] = useState(false);
     const [username, setUsername] = useState("");
 
     return (
@@ -25,7 +25,7 @@ function App() {
                     <Navbar/>
                 </div>
                 :
-                ''
+                null
                 }
 
                 <Routes>
@@ -33,9 +33,9 @@ function App() {
                             {<Navigate to='/login'/>}
                         />
 
-                    <Route path='/login' element=
-                        {<Login loginStatus={loginStatus} setLoginStatus={setLoginStatus} username={username} setUsername={setUsername}/>}
-                    />
+                        <Route path='/login' element=
+                            {<Login loginStatus={loginStatus} setLoginStatus={setLoginStatus} username={username} setUsername={setUsername}/>}
+                        />
 
                         <Route path='/home' element=
                             {<Home/>}

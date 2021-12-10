@@ -84,8 +84,8 @@ app.post('/login', (req, res) => {
     );
 });
 
-app.post('/files', upload.single('new_file'), (req,res) =>{
-})
+app.post('/send-file', upload.single('file'), (req,res) =>{
+});
 
 app.post("/send-email",(req,res)=>{
   const username = req.body.username
@@ -135,6 +135,27 @@ app.post("/send-email",(req,res)=>{
 
 });
 
+app.post("/obtener-perfil", (req,res) => {
+  const username = req.body.username;
+  
+  
+  db.query(
+    "SELECT perfil FROM usuario WHERE RUT = ?",
+    [username],
+    (err, result) => {
+      
+      if (err) {
+          console.log(err);
+          res.send({err: err});
+      }
+      
+      if (result.length > 0) {
+        res.send(result[0].perfil);
+      }
+    }
+  );
+  
+});
 
 
 

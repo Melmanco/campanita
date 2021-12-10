@@ -8,12 +8,12 @@ function Header(props) {
         <div className = "Files">
             <div className ="Header-nav Padding">
                 <img className= "img" src = {logo}/>
-                <div class="btn-group">
+                <div className="btn-group">
                     <button id="message_button">
-                        <img class="message_icon" src={messageButton}/>
+                        <img className="message_icon" src={messageButton}/>
                     </button>
                     <button id="settings_button">
-                        <img class="settings_icon" src={settingsButton}/>
+                        <img className="settings_icon" src={settingsButton}/>
                     </button>
                 </div>
             </div>

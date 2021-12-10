@@ -31,7 +31,7 @@ function Login(props) {
     return (
         <div className='Login'>
           <header className='Login-header'>
-            <div class='text-center'>
+            <div className='text-center'>
               <img src={Logo} class='img-fluid'/>
             </div>
             <h1>Iniciar sesión</h1>

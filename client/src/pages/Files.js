@@ -1,13 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import Axios from 'axios';
+import Uploader from '../components/Uploader';
 import '../index.css';
 
-function Files(){
+function Files(props){
+    const {username} = props;
+    const [perfil,setPerfil] = useState("");
+    
+    useEffect(() => {
+        Axios.post("http://localhost:3000/obtener-perfil", {
+            username: username
+        }).then((response) => {
+            console.log(response.data);
+            if(response.data === "Directora" || response.data === "Docente" || response.data === "Estudiante")
+                setPerfil(response.data);
+        });
+    });
+    
     return(
         <div className="Body">
-            <form action="/files" method="post" enctype="multipart/form-data">
-                <input type="file" name="new_file" id=""/>
-                <input type="submit" value="Enviar"/>
-            </form>
+            {perfil === 'Directora' || perfil === 'Docente'?
+            <Uploader/>
+            :
+            null
+            }
         </div>
     );
 }

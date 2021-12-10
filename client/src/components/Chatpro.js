@@ -9,7 +9,7 @@ function Chatpro({socket,username,room}){
                 room: room,
                 author: username,
                 message: currentMessage,
-                time: new Date(date.now()).getHours() + ":" + Date(date.now()).getHours()  
+                time: new Date(Date.now()).getHours() + ":" + Date(Date.now()).getHours()  
             }
         }
     }

@@ -3,9 +3,10 @@ import '../index.css';
 import {Calendario} from '../components/Calendario.js'
 function Anuncios(props){
     const {username} = props
+
     return(
         <div className="Body">
-            <Calendario/>
+            <Calendario username={username}/>
         </div>
     );
 }

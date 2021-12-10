@@ -157,6 +157,26 @@ app.post("/obtener-perfil", (req,res) => {
   
 });
 
-
+app.post("/obtener-nombre", (req,res) => {
+  const username = req.body.username;
+  
+  
+  db.query(
+    "SELECT nombre FROM usuario WHERE RUT = ?",
+    [username],
+    (err, result) => {
+      
+      if (err) {
+          console.log(err);
+          res.send({err: err});
+      }
+      
+      if (result.length > 0) {
+        res.send(result[0].nombre);
+      }
+    }
+  );
+  
+});
 
 servidor.listen(PORT, console.log(`Server started on port ${PORT}`));

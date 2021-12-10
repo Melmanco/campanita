@@ -3,6 +3,7 @@ import Chat from '../components/Chat';
 import io from "socket.io-client";
 import Chatpro from "../components/Chatpro"
 
+import "./App.css";
 
 const socket = io.connect("http://localhost:3000");
 

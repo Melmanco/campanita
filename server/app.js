@@ -1,4 +1,4 @@
-const express = require('express');
+onst express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
 const multer = require('multer');
@@ -13,42 +13,40 @@ const storage = multer.diskStorage({
 })
 
 const app = express();
+const {Server} = require("socket.io");
 
 const servidor = http.createServer(app);
-const socketio = require("socket.io")
-const io = socketio(servidor);
+const socketio = require("socket.io");
 
 app.use(express.json());
 app.use(cors());
 
-io.on("connection", (socket) => {
-  let username;
+const io = new Server(servidor,{
+  cors: {
+    origin: "http//localhost:3000",
+    methods: ["GET","POST"],
+  },
 
-  socket.on("conectado", (nomb) => {
-    username = nomb;
-    //socket.broadcast.emit manda el mensaje a todos los clientes excepto al que ha enviado el mensaje
-    socket.broadcast.emit("mensajes", {
-      username: username,
-      mensaje: `${username} ha entrado en la sala del chat`,
-    });
-  });
-
-  socket.on("mensaje", (username, mensaje) => {
-    //io.emit manda el mensaje a todos los clientes conectados al chat
-    io.emit("mensajes", { username, mensaje });
-  });
-
-  socket.on("disconnect", () => {
-    io.emit("mensajes", {
-      servidor: "Servidor",
-      mensaje: `${username} ha abandonado la sala`,
-    });
-  });
 });
 
+io.on("connection", (socket)=>{
+  console.log(`User Connected: ${socket.id}`);
+
+  socket.on("join_room",(data) =>{
+    socket.join(data);
+    console.log(`User with ID: ${socket.id} join room: ${data}`)
+  })
+
+  socket.on("disconnect",()=>{
+    console.log("User Disconnected",socket.id);
+  })
+})
 
 
 
+
+
+ 
 const db = mysql.createConnection({
     user        : 'root',
     host        : 'localhost',

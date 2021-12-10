@@ -46,6 +46,8 @@ export function Calendario(props) {
 
     const {username} = props;
     const [perfil,setPerfil] = useState("");
+    const [isRendered, setIsRendered] = useState(false);
+    
     useEffect(() => {
         Axios.post("http://localhost:3000/obtener-perfil", {
             username: username
@@ -54,6 +56,8 @@ export function Calendario(props) {
             if(response.data === "Directora" || response.data === "Docente" || response.data === "Estudiante")
                 setPerfil(response.data);
         });
+        
+        setIsRendered(true);
     });
 
 
@@ -64,7 +68,9 @@ export function Calendario(props) {
     function handleAddEvent() {
         setAllEvents([...allEvents, newEvent]);
     }
-    if (perfil === "Estudiante"){
+    if (!isRendered)
+        return(<div/>);
+    else if (perfil === "Estudiante"){
 
         return (
             <div className="Calendar">

@@ -13,7 +13,7 @@ import Anuncios from './pages/Anuncios';
 
 function App() {
 
-    const [loginStatus, setLoginStatus] = useState(true);
+    const [loginStatus, setLoginStatus] = useState(false);
     const [username, setUsername] = useState("");
 
     return (

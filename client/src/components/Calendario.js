@@ -20,28 +20,26 @@ const localizer = dateFnsLocalizer ({
     locales
 })
 
-const events = [
-    {
-        title: "Big Meeting",
-        allDay: true,
-        start: new Date(2021, 6, 0),
-        end: new Date(2021, 6, 0),
-    },
-    {
-        title: "Vacation",
-        start: new Date(2021, 6, 7),
-        end: new Date(2021, 6, 10),
-    },
-    {
-        title: "Conference",
-        start: new Date(2021, 6, 20),
-        end: new Date(2021, 6, 23),
-    },
-];
+
 
 
 
 export function Calendario(props) {
+    const [newEvent, setNewEvent] = useState({ title: "" , start: "", end: "" });
+    const [allEvents, setAllEvents] = useState([]);
+
+
+    useEffect(() => {
+        Axios.get("http://localhost:8080/calendario").then( (response) =>{
+            
+            if(response.status === 200){
+            
+                setAllEvents(response.data)
+            }
+        })
+    }, [])
+    console.log(allEvents)
+
 
     const {username} = props;
     const [perfil,setPerfil] = useState("");
@@ -61,19 +59,21 @@ export function Calendario(props) {
 
 
 
-    const [newEvent, setNewEvent] = useState({ title: "", start: "", end: "" });
-    const [allEvents, setAllEvents] = useState(events);
+   
 
     function handleAddEvent() {
         Axios.post("http://localhost:8080/calendario",{
-            titulo: newEvent.title,
-            inicio: newEvent.start,
-            fin: newEvent.end
-        }).then((response)=>{
-            console.log(response)
-            setAllEvents([...allEvents, newEvent]);
+            title: newEvent.title,
+            start: newEvent.start,
+            end: newEvent.end
+        }).then( (response) =>{
+            
+            if(response.status === 200){
+            
+                console.log("hola")
+            }
         })
-
+        
     }
     if (!isRendered)
         return(<div/>);
@@ -108,7 +108,6 @@ export function Calendario(props) {
                     events={allEvents} 
                     startAccessor="start" 
                     endAccessor="end" 
-
                     style={{ height: 500, margin: "50px", backgroundColor: "#f0f0f0"}} 
                 />
             </div>)

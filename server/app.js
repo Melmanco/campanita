@@ -194,10 +194,10 @@ app.get("/calendario",(req, res) => {
   })
 
   app.post("/calendario",(req, res) => {
-    const titulo = req.body.titulo
-    const inicio = req.body.inicio
-    const fin = req.body.fin
-    db.query('INSERT INTO calendario(titulo,inicio,fin) VALUES (?,?,?)',[titulo,inicio,fin], (err, result) => {
+    const title = req.body.title
+    const start = req.body.start
+    const end = req.body.end
+    db.query('INSERT INTO calendario(title,start,end) VALUES (?,?,?)',[title,start,end], (err, result) => {
 
       if (err) {
         console.log(err);

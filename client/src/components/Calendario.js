@@ -8,7 +8,6 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Axios from 'axios';
-
 const locales = {
     "en-US": require("date-fns/locale/en-US")
 } 
@@ -66,7 +65,15 @@ export function Calendario(props) {
     const [allEvents, setAllEvents] = useState(events);
 
     function handleAddEvent() {
-        setAllEvents([...allEvents, newEvent]);
+        Axios.post("http://localhost:8080/calendario",{
+            titulo: newEvent.title,
+            inicio: newEvent.start,
+            fin: newEvent.end
+        }).then((response)=>{
+            console.log(response)
+            setAllEvents([...allEvents, newEvent]);
+        })
+
     }
     if (!isRendered)
         return(<div/>);

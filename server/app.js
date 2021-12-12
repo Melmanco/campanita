@@ -178,5 +178,36 @@ app.post("/obtener-nombre", (req,res) => {
   );
   
 });
+app.get("/calendario",(req, res) => {
+
+      db.query('SELECT * from calendario', (err, result) => {
+
+        if (err) {
+          console.log(err);
+          res.send({err: err});
+      }
+      
+      if (result.length > 0) {
+        res.send(result);
+      }
+      })
+  })
+
+  app.post("/calendario",(req, res) => {
+    const titulo = req.body.titulo
+    const inicio = req.body.inicio
+    const fin = req.body.fin
+    db.query('INSERT INTO calendario(titulo,inicio,fin) VALUES (?,?,?)',[titulo,inicio,fin], (err, result) => {
+
+      if (err) {
+        console.log(err);
+        res.send({err: err});
+    }
+    
+    if (result.length > 0) {
+      res.send(result);
+    }
+    })
+})
 
 servidor.listen(PORT, console.log(`Server started on port ${PORT}`));

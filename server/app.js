@@ -26,11 +26,11 @@ const io = new Server(servidor,{
     origin: "http//localhost:3000",
     methods: ["GET","POST"],
   },
-
+ 
 });
-
+var users = []
 io.on("connection", (socket)=>{
-  console.log(`User Connected: ${socket.id}`);
+  /*console.log(`User Connected: ${socket.id}`);*/
 
   socket.on("join_room",(data) =>{
     socket.join(data);
@@ -40,7 +40,7 @@ io.on("connection", (socket)=>{
     socket.to(data.room).emit("receive_message",data);
   });
   socket.on("disconnect",()=>{
-    console.log("User Disconnected",socket.id);
+    /*console.log("User Disconnected",socket.id);*/
   });
 });
 
@@ -111,7 +111,7 @@ app.post("/send-email",(req,res)=>{
       
         var notificacionCertificado = {
           from: "<jardin.campanita.notificaciones@gmail.com>",
-          to: "felipe.maldonado19@outlook.com",
+          to: "diego.c.080808@gmail.com",
           subject: "Certificado Alumno Regular",
           text: "El estudiante " + result[0].nombre + " ha solicitado un certificado de alumno regular." 
         }
@@ -178,5 +178,36 @@ app.post("/obtener-nombre", (req,res) => {
   );
   
 });
+
+app.get("/obtener-parvularias", (req,res)=>{
+  db.query(
+    "SELECT nombre FROM usuario WHERE Perfil = 'Docente' ",
+    (err,result)=>{
+      if(err){
+        console.log(err);
+        res.send({err:err});
+      }
+      if(result.length > 0){
+        res.send(result);
+      }
+    }
+  )
+}
+);
+
+app.get("/obtener-alumnos",(req,res)=>{
+  db.query(
+    "SELECT rut FROM usuario WHERE Perfil = 'Estudiante' ",
+    (err,result)=>{
+      if(err){
+        console.log(err);
+        res.send({err:err});
+      }
+      if(result.lenght > 0){
+        res.send(result);
+      }
+    }
+  )
+})
 
 servidor.listen(PORT, console.log(`Server started on port ${PORT}`));

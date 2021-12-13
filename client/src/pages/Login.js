@@ -4,6 +4,9 @@ import Axios from 'axios';
 import './Login.css'
 import Logo from '../img/integra.png';
 
+
+const md5 = require('md5');
+
 function Login(props) {
 
     const {loginStatus, setLoginStatus, username, setUsername} = props
@@ -46,7 +49,7 @@ function Login(props) {
               type='password'
               placeholder='Contraseña'
               onChange={(e) => {
-                setPassword(e.target.value);
+                setPassword(md5(e.target.value));
               }}
             />
             <h1></h1>

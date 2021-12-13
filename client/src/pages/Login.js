@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import Axios from 'axios';
 import './Login.css'
 import Logo from '../img/integra.png';
+const md5 = require('md5');
 
 
 const md5 = require('md5');

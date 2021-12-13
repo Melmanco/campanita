@@ -6,7 +6,6 @@ import Logo from '../img/integra.png';
 const md5 = require('md5');
 
 
-const md5 = require('md5');
 
 function Login(props) {
 

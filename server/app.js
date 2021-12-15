@@ -197,17 +197,58 @@ app.get("/obtener-parvularias", (req,res)=>{
 
 app.get("/obtener-alumnos",(req,res)=>{
   db.query(
-    "SELECT rut FROM usuario WHERE Perfil = 'Estudiante' ",
+    "SELECT nombre FROM usuario WHERE Perfil = 'Estudiante' ",
     (err,result)=>{
       if(err){
         console.log(err);
         res.send({err:err});
       }
-      if(result.lenght > 0){
+      if(result.length > 0){
+        console.log(result);
         res.send(result);
       }
     }
   )
-})
+});
+
+app.post("/obtener-rut-string",(req,res)=>{
+  const nombre = req.body.nombre;
+  console.log(nombre)
+  db.query(
+    "SELECT rut FROM usuario WHERE Nombre = ?",
+    [nombre],
+    (err, result) => {
+      
+      if (err) {
+          console.log(err);
+          res.send({err: err});
+      }
+      
+      if (result.length > 0) {
+        res.send(String(result[0].rut));
+      }
+    }
+  )
+});                                            
+
+app.post("/obtener-mensajes",(req,res)=>{
+  const remitente = req.body.remitente;
+  const destinatario = req.body.destinatario;
+  db.query(
+    "SELECT * FROM mensaje WHERE ID_Remitente = ? and ID_Destinario = ?",
+    [remitente,destinatario],
+    (err, result) => {
+      if (err) {
+          console.log(err);
+          res.send({err: err});
+      }
+
+      if (result.length > 0) {
+          res.send(result);
+      }
+    }
+  )
+    
+});
 
 servidor.listen(PORT, console.log(`Server started on port ${PORT}`));

@@ -16,9 +16,9 @@ def main(filename, group_min=15, group_max=20, group_qty=5):
         file.write(f'INSERT INTO grupo(ID_Grupo, Nombre) values({group+1}, "grupo {group+1}");\n')
         
         for member in range(random.randrange(group_min, group_max+1)):
-            rut = random.randint(23000000,24000000)
+            rut = random.randint(230000000,240000000)
             while rut in ruts:
-                    rut = random.randint(23000000,24000000)
+                    rut = random.randint(230000000,240000000)
             ruts.append(rut)
 
             name = random.choice(NAMES)
@@ -29,9 +29,9 @@ def main(filename, group_min=15, group_max=20, group_qty=5):
             file.write(f'INSERT INTO usuario(RUT, Nombre, Perfil, Contraseña, Email) values({rut}, "{name} {lastname}", "Estudiante", "{pwd}", "{email}");\n')
             file.write(f'INSERT INTO contiene(ID_Grupo, RUT) values({group+1}, {rut});\n')
         
-        rut = random.randint(10000000,15000000)
+        rut = random.randint(100000000,150000000)
         while rut in ruts:
-                rut = random.randint(10000000,15000000)
+                rut = random.randint(100000000,150000000)
         ruts.append(rut)
 
         name = random.choice(NAMES)

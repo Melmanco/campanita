@@ -5,14 +5,6 @@ const multer = require('multer');
 const mimeTypes = require('mime-types');
 const http = require("http");
 const nodemailer = require("nodemailer");
-const storage = multer.diskStorage({
-    destination: function(req,file,cb) {
-      cb(null, 'uploads')
-    },
-    filename: function(req,file,cb){
-        cb(null, Date.now() + "-" + file.originalname);
-    }
-})
 
 const app = express();
 const {Server} = require("socket.io");
@@ -23,6 +15,9 @@ const socketio = require("socket.io");
 app.use(express.json());
 app.use(cors());
 
+var users = []
+
+// Server de chat ------------------------------------------------
 const io = new Server(servidor,{
   cors: {
     origin: "http//localhost:3000",
@@ -30,7 +25,7 @@ const io = new Server(servidor,{
   },
  
 });
-var users = []
+
 io.on("connection", (socket)=>{
   /*console.log(`User Connected: ${socket.id}`);*/
 
@@ -45,12 +40,11 @@ io.on("connection", (socket)=>{
     /*console.log("User Disconnected",socket.id);*/
   });
 });
+//----------------------------------------------------------------
 
 
 
-
-
- 
+// MySQL----------------------------------------------------------
 const db = mysql.createConnection({
     user        : 'root',
     host        : 'localhost',
@@ -58,10 +52,26 @@ const db = mysql.createConnection({
 });
 
 const PORT = process.env.PORT || 8080;
+// ---------------------------------------------------------------
+
+
+// Subida y descarga de documentos -------------------------------
+const storage = multer.diskStorage({
+  destination: function(req,file,cb) {
+    cb(null, 'uploads')
+  },
+  filename: function(req,file,cb){
+      cb(null, Date.now() + "-" + file.originalname);
+  }
+})
 
 const upload = multer({
     storage: storage
 })
+// ---------------------------------------------------------------
+
+
+
 
 app.post('/login', (req, res) => {
     const username = req.body.username;

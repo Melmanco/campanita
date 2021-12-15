@@ -6,9 +6,11 @@ const mimeTypes = require('mime-types');
 const http = require("http");
 const nodemailer = require("nodemailer");
 const storage = multer.diskStorage({
-    destination: 'uploads/',
+    destination: function(req,file,cb) {
+      cb(null, 'uploads')
+    },
     filename: function(req,file,cb){
-        cb("",Date.now() + "." + mimeTypes.extension(file.mimetype));
+        cb(null, Date.now() + "-" + file.originalname);
     }
 })
 
@@ -85,6 +87,7 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/send-file', upload.single('file'), (req,res) =>{
+  res.end();
 });
 
 app.post("/send-email",(req,res)=>{
@@ -179,9 +182,34 @@ app.post("/obtener-nombre", (req,res) => {
   
 });
 
-app.get("/obtener-parvularias", (req,res)=>{
+app.post("/obtener-grupo", (req,res) => {
+  const username = req.body.username;
+  
+  
   db.query(
-    "SELECT nombre FROM usuario WHERE Perfil = 'Docente' ",
+    "SELECT ID_Grupo FROM usuario, contiene WHERE usuario.RUT = contiene.RUT AND usuario.RUT = ?",
+    [parseInt(username)],
+    (err, result) => {
+      
+      if (err) {
+          console.log(err);
+          res.send({err: err});
+      }
+      
+      if (result.length > 0) {
+        res.send(String(result[0].ID_Grupo));
+      }
+    }
+  );
+  
+});
+
+app.post("/obtener-parvularias", (req,res)=>{
+  const grupo = req.body.grupo;
+
+  db.query(
+    "SELECT nombre FROM usuario, contiene WHERE usuario.RUT = contiene.RUT AND Perfil = 'Docente' AND ID_Grupo = ?",
+    [grupo],
     (err,result)=>{
       if(err){
         console.log(err);
@@ -195,16 +223,18 @@ app.get("/obtener-parvularias", (req,res)=>{
 }
 );
 
-app.get("/obtener-alumnos",(req,res)=>{
+app.post("/obtener-alumnos",(req,res)=>{
+  const grupo = req.body.grupo;
+
   db.query(
-    "SELECT nombre FROM usuario WHERE Perfil = 'Estudiante' ",
+    "SELECT nombre FROM usuario, contiene WHERE usuario.RUT = contiene.RUT AND Perfil = 'Estudiante' AND ID_Grupo = ?",
+    [grupo],
     (err,result)=>{
       if(err){
         console.log(err);
         res.send({err:err});
       }
       if(result.length > 0){
-        console.log(result);
         res.send(result);
       }
     }
@@ -250,5 +280,7 @@ app.post("/obtener-mensajes",(req,res)=>{
   )
     
 });
+
+app.post("")
 
 servidor.listen(PORT, console.log(`Server started on port ${PORT}`));

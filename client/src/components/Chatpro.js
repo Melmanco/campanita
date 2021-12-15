@@ -1,8 +1,7 @@
-import Axios  from "axios";
 import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
 
-function Chat({ socket, username, room ,from,to}) {
+function Chat({ socket, username, room }) {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
 
@@ -16,33 +15,13 @@ function Chat({ socket, username, room ,from,to}) {
           new Date(Date.now()).getHours() +
           ":" +
           new Date(Date.now()).getMinutes(),
-        timedata: new Date
       };
 
       await socket.emit("send_message", messageData);
       setMessageList((list) => [...list, messageData]);
-      var date_mysql = messageData.timedata.getUTCFullYear() + '-' +
-      ('00' + (messageData.timedata.getUTCMonth()+1)).slice(-2) + '-' +
-      ('00' + messageData.timedata.getUTCDate()).slice(-2) + ' ' + 
-      ('00' + messageData.timedata.getUTCHours()).slice(-2) + ':' + 
-      ('00' + messageData.timedata.getUTCMinutes()).slice(-2) + ':' + 
-      ('00' + messageData.timedata.getUTCSeconds()).slice(-2);
-
-      Axios.post("http://localhost:3000/guarda-mensajes",{username: from,destinatario: to,message:messageData.message,time : date_mysql});
-
       setCurrentMessage("");
     }
   };
-  useEffect(()=>{
-    Axios.post("http://localhost:3000/obtener-mensajes",{
-      remitente: from,
-      destinatario: to
-    }).then((response)=>{
-      var bdmensajes = 
-    })
- });
-
-
 
   useEffect(() => {
     socket.on("receive_message", (data) => {

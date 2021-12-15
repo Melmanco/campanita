@@ -18,43 +18,34 @@ function Contacto(props){
     const [rutreceptor,setRutreceptor] = useState("");
     const [sala,setSala] = useState("");
     const [showChat, setShowChat] = useState(false);
-    const [grupo,setGrupo] = useState("");
     var options = []
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         Axios.post("http://localhost:3000/obtener-nombre", {
             username: username
         }).then((response) => {
             setNombre(response.data);
         });
   
+
+
         Axios.post("http://localhost:3000/obtener-perfil",{
             username: username
         }).then((response) => {
             setPerfil(response.data);
-        });
-
-        Axios.post("http://localhost:3000/obtener-grupo",{
-            username: username
-        }).then((response) => {
-            setGrupo(response.data);
-        });
+        })
 
    
         if(perfil == 'Estudiante'){
-            Axios.post("http://localhost:3000/obtener-parvularias",{
-                grupo: grupo
-            }).then((response) => {
+            Axios.get("http://localhost:3000/obtener-parvularias").then((response) => {
                 for(let i = 0; i < response.data.length;i++){
                     options.push({value: response.data[i].nombre ,label: response.data[i].nombre})
                 }
             })
         }
         else{
-            console.log(grupo);
-            Axios.post("http://localhost:3000/obtener-alumnos",{
-                grupo: grupo
-            }).then((response) => {
+            console.log("funciona el log? ")
+            Axios.get("http://localhost:3000/obtener-alumnos").then((response) => {
                 for(let i = 0; i < response.data.length;i++){
                     options.push({value: response.data[i].nombre ,label: response.data[i].nombre})
                     console.log(response.data)
@@ -99,7 +90,7 @@ function Contacto(props){
                 <button onClick ={joinRoom}>Unirse a la sala</button>
 
 
-                <Chatpro socket={socket} username = {nombre} room = {room} from = {username} to = {parseInt(rutreceptor)}/>
+                <Chatpro socket={socket} username = {nombre} room = {room}/>
 
             </h3>
         </div>

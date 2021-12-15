@@ -90,7 +90,7 @@ function Contacto(props){
                 <button onClick ={joinRoom}>Unirse a la sala</button>
 
 
-                <Chatpro socket={socket} username = {nombre} room = {room}/>
+                <Chatpro socket={socket} username = {nombre} room = {room} from = {username} to = {parseInt(rutreceptor)}/>
 
             </h3>
         </div>

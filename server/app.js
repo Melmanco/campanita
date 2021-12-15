@@ -275,7 +275,7 @@ app.post("/obtener-mensajes",(req,res)=>{
   const remitente = req.body.remitente;
   const destinatario = req.body.destinatario;
   db.query(
-    "SELECT * FROM mensaje WHERE ID_Remitente = ? and ID_Destinario = ?",
+    "SELECT * FROM mensaje WHERE ID_Remitente = ? and ID_Destinatario = ?",
     [remitente,destinatario],
     (err, result) => {
       if (err) {
@@ -288,7 +288,23 @@ app.post("/obtener-mensajes",(req,res)=>{
       }
     }
   )
-    
+});
+
+app.post("/guarda-mensajes",(req,res)=>{
+  const username = req.body.username;
+  const destinatario = req.body.destinatario;
+  const message = req.body.message;
+  const time = req.body.time;
+  db.query(
+    "INSERT INTO mensaje (ID_Remitente,ID_Destinatario,Contenido,Fecha) Values (?,?,?,?)",
+    [username,destinatario,message,time],
+    (err, result) => {
+      if (err) {
+          console.log(err);
+          res.send({err: err});
+      }
+    }
+  )
 });
 
 app.post("")

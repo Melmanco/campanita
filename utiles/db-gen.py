@@ -8,7 +8,7 @@ LASTNAMES=['García', 'Rodríguez', 'Martínez', 'Hernández', 'López', 'Gonzá
 
 def main(filename, group_min=15, group_max=20, group_qty=5):
     date = datetime.now().strftime('%Y_%m_%d-%I.%M.%S_%p')
-    file = open(f'db_campanita_{date}', 'w', encoding='utf-8')
+    file = open(f'db_campanita_{date}.sql', 'w', encoding='utf-8')
     ruts = []
     random.seed(datetime.now())
 

@@ -1,7 +1,8 @@
+import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
 
-function Chat({ socket, username, room }) {
+function Chat({ socket, username, room,from,to }) {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
 
@@ -16,8 +17,11 @@ function Chat({ socket, username, room }) {
           ":" +
           new Date(Date.now()).getMinutes(),
       };
+      var mysql_date = new Date(Date.now()).toISOString().slice(0, 19).replace('T', ' ');
 
       await socket.emit("send_message", messageData);
+      console.log(to)
+      Axios.post("http://localhost:3000/guarda-mensajes",{username: from, destinatario: to,message: messageData.message,time: mysql_date})
       setMessageList((list) => [...list, messageData]);
       setCurrentMessage("");
     }

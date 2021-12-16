@@ -2,7 +2,7 @@ import React,{useState,useEffect,useLayoutEffect} from 'react'
 import io from "socket.io-client";
 import Chatpro from "../components/Chatpro"
 import Select from 'react-select'
-import Axios from "axios"
+import Axios,{axios} from "axios"
 
 const socket = io.connect("http://localhost:3000");
 
@@ -42,6 +42,7 @@ function Contacto(props){
 
    
         if(perfil == 'Estudiante'){
+            console.log(grupo)
             Axios.post("http://localhost:3000/obtener-parvularias",{
                 grupo: grupo
             }).then((response) => {
@@ -57,31 +58,37 @@ function Contacto(props){
             }).then((response) => {
                 for(let i = 0; i < response.data.length;i++){
                     options.push({value: response.data[i].nombre ,label: response.data[i].nombre})
-                    console.log(response.data)
                 }
             })
         }
     })
     
     const crearSala = (parvu,alumno) =>{
+        console.log(parvu,alumno)
         setSala(parvu+alumno)
         setRoom(sala)
         socket.emit("join_room", room);
 
     }
+    
     const joinRoom = () =>{
         if(perfil == 'Estudiante'){
-            Axios.post("http://localhost:3000/obtener-rut-string",{nombre: receptor}).then((response)=>{
-                setRutreceptor(response.data)
-            });
-            crearSala(receptor,String(username));
-        }
-        else if(perfil == 'Docente'){
             
             Axios.post("http://localhost:3000/obtener-rut-string",{nombre: receptor}).then((response)=>{
                 setRutreceptor(response.data)
+            });
+            crearSala(receptor,nombre);
+            setShowChat(true);
+
+        }
+        else{
+            
+            Axios.post("http://localhost:3000/obtener-rut-string",{nombre: receptor}).then((response)=>{
+                setRutreceptor(response.data)
+                
             })
-            crearSala(String(username),receptor);
+            crearSala(nombre,receptor);
+            setShowChat(true);
         }
     };
     const valores = (e) =>{
@@ -89,19 +96,21 @@ function Contacto(props){
     }
     return(
         <div className="Body">
-            <h3>
-
-                <Select 
-                options={options} 
-                onChange={valores}
-                />
+            {!showChat ? (
+                <div className = "joinChatContainer">
+                    <h3> Unirse a un chat</h3>
+                    <Select 
+                        options={options} 
+                        onChange={valores}
+                        />
                 
-                <button onClick ={joinRoom}>Unirse a la sala</button>
+                    <button onClick ={joinRoom}>Unirse a la sala</button>
 
+                </div>
+            ) : (
+                     <Chatpro socket={socket} username = {nombre} room = {room} from = {username} to = {parseInt(rutreceptor)}/>
+                )}
 
-                <Chatpro socket={socket} username = {nombre} room = {room}/>
-
-            </h3>
         </div>
     );
 }

@@ -265,6 +265,7 @@ app.post("/obtener-rut-string",(req,res)=>{
       }
       
       if (result.length > 0) {
+        console.log(result[0].rut)
         res.send(String(result[0].rut));
       }
     }
@@ -291,6 +292,21 @@ app.post("/obtener-mensajes",(req,res)=>{
     
 });
 
-app.post("")
+app.post("/guarda-mensajes",(req,res)=>{
+  const username = req.body.username;
+  const destinatario = req.body.destinatario;
+  const message = req.body.message;
+  const time = req.body.time;
+  db.query(
+    "INSERT INTO mensaje (ID_Remitente,ID_Destinatario,Contenido,Fecha) Values (?,?,?,?)",
+    [username,destinatario,message,time],
+    (err,result)=>{
+      if(err){
+        console.log(err);
+        res.send({err: err});
+      }
+    }
+  )
+})
 
 servidor.listen(PORT, console.log(`Server started on port ${PORT}`));

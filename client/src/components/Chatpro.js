@@ -29,10 +29,8 @@ function Chat(props) {
             }
 
           }
-        
-          if(!(antiguos in messageList)){
-            setMessageList((list) => [...list, antiguos]);
-          }
+        setMessageList((list) => [...list, antiguos]);
+          
           
           }
         setPrimera(false);

@@ -92,7 +92,9 @@ app.post('/login', (req, res) => {
                 console.log('Usuario o contraseña incorrectos');
                 res.send({ message: 'failure'});
             }
+            res.end();
         }
+        
     );
 });
 
@@ -141,6 +143,7 @@ app.post("/send-email",(req,res)=>{
         });
       
       }
+      res.end();
     }
   );
 
@@ -165,7 +168,9 @@ app.post("/obtener-perfil", (req,res) => {
       if (result.length > 0) {
         res.send(result[0].perfil);
       }
+      res.end();
     }
+    
   );
   
 });
@@ -187,6 +192,7 @@ app.post("/obtener-nombre", (req,res) => {
       if (result.length > 0) {
         res.send(result[0].nombre);
       }
+      res.end();
     }
   );
   
@@ -209,6 +215,7 @@ app.post("/obtener-grupo", (req,res) => {
       if (result.length > 0) {
         res.send(String(result[0].ID_Grupo));
       }
+      res.end();
     }
   );
   
@@ -228,6 +235,7 @@ app.post("/obtener-parvularias", (req,res)=>{
       if(result.length > 0){
         res.send(result);
       }
+      res.end();
     }
   )
 }
@@ -247,6 +255,7 @@ app.post("/obtener-alumnos",(req,res)=>{
       if(result.length > 0){
         res.send(result);
       }
+      res.end();
     }
   )
 });
@@ -268,6 +277,7 @@ app.post("/obtener-rut-string",(req,res)=>{
         console.log(result[0].rut)
         res.send(String(result[0].rut));
       }
+      res.end();
     }
   )
 });                                            
@@ -276,7 +286,7 @@ app.post("/obtener-mensajes",(req,res)=>{
   const remitente = req.body.remitente;
   const destinatario = req.body.destinatario;
   db.query(
-    "SELECT * FROM mensaje WHERE ID_Remitente = ? and ID_Destinario = ?",
+    "SELECT * FROM mensaje WHERE ID_Remitente = ? and ID_Destinatario = ?",
     [remitente,destinatario],
     (err, result) => {
       if (err) {
@@ -287,26 +297,29 @@ app.post("/obtener-mensajes",(req,res)=>{
       if (result.length > 0) {
           res.send(result);
       }
+      res.end();
     }
   )
     
 });
 
 app.post("/guarda-mensajes",(req,res)=>{
-  const username = req.body.username;
+  const nombre = req.body.nombre;
   const destinatario = req.body.destinatario;
   const message = req.body.message;
   const time = req.body.time;
+  console.log("1")
   db.query(
     "INSERT INTO mensaje (ID_Remitente,ID_Destinatario,Contenido,Fecha) Values (?,?,?,?)",
-    [username,destinatario,message,time],
+    [nombre,destinatario,message,time],
     (err,result)=>{
       if(err){
         console.log(err);
         res.send({err: err});
       }
+      res.end();
     }
   )
-})
+});
 
 servidor.listen(PORT, console.log(`Server started on port ${PORT}`));

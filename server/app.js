@@ -286,8 +286,8 @@ app.post("/obtener-mensajes",(req,res)=>{
   const remitente = req.body.remitente;
   const destinatario = req.body.destinatario;
   db.query(
-    "SELECT * FROM mensaje WHERE ID_Remitente = ? and ID_Destinatario = ?",
-    [remitente,destinatario],
+    "SELECT * FROM mensaje WHERE ID_Remitente = ? AND ID_Destinatario = ? OR ID_Remitente = ? AND ID_Destinatario = ?",
+    [remitente,destinatario,destinatario,remitente],
     (err, result) => {
       if (err) {
           console.log(err);

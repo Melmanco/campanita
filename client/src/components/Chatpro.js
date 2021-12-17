@@ -6,19 +6,34 @@ function Chat(props) {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
   const [primera,setPrimera] = useState(true);
-  const {socket,nombre,room,from,to} = props
+  const {socket,nombre,recibe,room,from,to} = props
   
   useEffect(()=>{
     Axios.post("http://localhost:3000/obtener-mensajes",{remitente: from,destinatario: to}).then((response)=>{
       if(primera){
         for(let i = 0;i < response.data.length ;i++){
-          var antiguos = {
-            room: room,
-            author: nombre,
-            message: response.data[i].Contenido,
-            time: response.data[i].Fecha.slice(11,-8)
+          if(response.data[i].ID_Remitente == from){
+            var antiguos = {
+              room: room,
+              author: nombre,
+              message: response.data[i].Contenido,
+              time: response.data[i].Fecha.slice(11,-8)
+            }
           }
-          setMessageList((list) => [...list, antiguos]);
+          else{
+            var antiguos = {
+              room: room,
+              author: recibe,
+              message: response.data[i].Contenido,
+              time: response.data[i].Fecha.slice(11,-8)
+            }
+
+          }
+        
+          if(!(antiguos in messageList)){
+            setMessageList((list) => [...list, antiguos]);
+          }
+          
           }
         setPrimera(false);
         }

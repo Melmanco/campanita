@@ -104,7 +104,7 @@ function Contacto(props){
 
                 </div>
             ) : (
-                     <Chatpro socket={socket} nombre = {nombre} room = {room} from = {username} to = {parseInt(rutreceptor)}/>
+                     <Chatpro socket={socket} nombre = {nombre} recibe = {receptor} room = {room} from = {username} to = {parseInt(rutreceptor)}/>
                 )}
 
         </div>

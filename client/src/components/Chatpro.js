@@ -80,7 +80,7 @@ function Chat(props) {
             return (
               <div
                 className="message"
-                id={nombre === messageContent.author ? "you" : "other"}
+                id={nombre === messageContent.author ? "other" : "you"}
               >
                 <div>
                   <div className="message-content">

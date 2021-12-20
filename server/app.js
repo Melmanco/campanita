@@ -191,23 +191,42 @@ app.get("/calendario",(req, res) => {
         res.send(result);
       }
       })
-  })
+  });
 
-  app.post("/calendario",(req, res) => {
+app.post("/calendario",(req, res) => {
     const title = req.body.title
     const start = req.body.start
     const end = req.body.end
     db.query('INSERT INTO calendario(title,start,end) VALUES (?,?,?)',[title,start,end], (err, result) => {
-
+    
       if (err) {
         console.log(err);
         res.send({err: err});
-    }
+      }
     
-    if (result.length > 0) {
-      res.send(result);
-    }
+      if (result.length > 0) {
+        res.send(result);
+      }
     })
-})
+});
+
+app.post("/no-calendario",(req,res)=>{
+  const start = req.body.start
+  const end = req.body.end
+  hola = start.slice(0,-14)
+  chao = end.slice(0,-14)
+  console.log(hola)
+  console.log(chao)
+  db.query('DELETE from calendario where start = ? and end = ?',
+  [hola,chao],
+  (err,result)=>{
+    if(err){
+      console.log(err);
+      res.send({err:err});
+    
+    }
+  }
+  )
+});
 
 servidor.listen(PORT, console.log(`Server started on port ${PORT}`));

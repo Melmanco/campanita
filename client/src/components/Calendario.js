@@ -62,6 +62,8 @@ export function Calendario(props) {
    
 
     function handleAddEvent() {
+        console.log(newEvent.start)
+        console.log(newEvent.end)
         Axios.post("http://localhost:8080/calendario",{
             title: newEvent.title,
             start: newEvent.start,
@@ -75,6 +77,19 @@ export function Calendario(props) {
         })
         
     }
+    function borrar(){
+        Axios.post("http://localhost:8080/no-calendario",{
+            start: newEvent.start,
+            end: newEvent.end
+
+        }).then((response)=>{
+            if(response.status == 200){
+                console.log("chao")
+            }
+        })
+    }
+
+
     if (!isRendered)
         return(<div/>);
     else if (perfil === "Estudiante"){
@@ -101,6 +116,11 @@ export function Calendario(props) {
                     <DatePicker placeholderText="Dia termino" selected={newEvent.end} onChange={(end) => setNewEvent({ ...newEvent, end })} />
                     <button stlye={{ marginTop: "10px" }} onClick={handleAddEvent}>
                         Añadir evento
+                    </button>
+
+
+                    <button stlye={{ marginTop: "10px" }} onClick={borrar} >
+                        Borrar evento
                     </button>
                 </div>
                 <Calendar 

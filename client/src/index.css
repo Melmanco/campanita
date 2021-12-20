@@ -80,3 +80,14 @@
   cursor: pointer;
   display: block;
 }
+
+.tamanoImagen {
+  height: auto; 
+  width: auto; 
+  max-width: 100px; 
+  max-height: 100px;
+}
+
+.text-certificado { font-size: 35px; font-weight: 550; font-family: 'Bungee Inline', cursive; }
+
+.text-shortest { font-size: 65px; font-weight: 550; font-family: 'Bungee Inline', cursive; }

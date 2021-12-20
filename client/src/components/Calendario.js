@@ -86,13 +86,12 @@ export function Calendario(props) {
     else {
         return (
             <div className="Calendar">
-                <h1>Calendario</h1>
-                <h2>Añadir nuevo evento</h2>
-                <div>
-                    <input type="text" placeholder="Titulo" style={{ width: "20%", marginRight: "10px" }} value={newEvent.title} onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} />
-                    <DatePicker placeholderText="Dia inicio" style={{ marginRight: "10px" }} selected={newEvent.start} onChange={(start) => setNewEvent({ ...newEvent, start })} />
-                    <DatePicker placeholderText="Dia termino" selected={newEvent.end} onChange={(end) => setNewEvent({ ...newEvent, end })} />
-                    <button stlye={{ marginTop: "10px" }} onClick={handleAddEvent}>
+                <h2 style={{ marginLeft: "25px" }}>Añadir nuevo evento</h2>
+                <div style={{ marginLeft: "25px" }}>
+                    <input type="text"  placeholder="Titulo"  value={newEvent.title} onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} />
+                    <DatePicker placeholderText="Dia inicio"  selected={newEvent.start} onChange={(start) => setNewEvent({ ...newEvent, start })} />
+                    <DatePicker placeholderText="Dia termino"  selected={newEvent.end} onChange={(end) => setNewEvent({ ...newEvent, end })} />
+                    <button style={{ marginTop: "10px" , marginBottom: "25px"}} onClick={handleAddEvent}>
                         Añadir evento
                     </button>
                 </div>
@@ -101,10 +100,11 @@ export function Calendario(props) {
                     events={allEvents} 
                     startAccessor="start" 
                     endAccessor="end" 
-
-                    style={{ height: 500, margin: "50px", backgroundColor: "#f0f0f0"}} 
+                    style={{ height: 500, marginLeft: "75px", marginRight: "75px", backgroundColor: "#f0f0f0"}} 
                 />
-            </div>)
+                <div style={{height: 75}}></div>
+            </div>
+            )
     }
 };
 

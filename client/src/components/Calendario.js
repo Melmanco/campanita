@@ -32,7 +32,7 @@ export function Calendario(props) {
     const [isRendered, setIsRendered] = useState(false);
 
     useEffect(() => {
-        Axios.post("http://localhost:8080/calendario").then( (response) =>{
+        Axios.get("http://localhost:8080/obtener-anuncios").then( (response) =>{
             
             if(response.status === 200){
             
@@ -58,7 +58,7 @@ export function Calendario(props) {
     function handleAddEvent() {
         console.log(newEvent.start)
         console.log(newEvent.end)
-        Axios.post("http://localhost:8080/calendario",{
+        Axios.post("http://localhost:8080/guardar-anuncio",{
             title: newEvent.title,
             start: newEvent.start,
             end: newEvent.end
@@ -72,7 +72,7 @@ export function Calendario(props) {
         
     }
     function handleDelEvent(){
-        Axios.post("http://localhost:8080/no-calendario",{
+        Axios.post("http://localhost:8080/eliminar-anuncio",{
             start: newEvent.start,
             end: newEvent.end
 

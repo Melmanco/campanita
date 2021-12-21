@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import '../index.css';
-import Axios from 'axios';
 
 function Files(props){
     const {username} = props;

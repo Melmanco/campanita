@@ -308,7 +308,6 @@ app.post("/guarda-mensajes",(req,res)=>{
   const destinatario = req.body.destinatario;
   const message = req.body.message;
   const time = req.body.time;
-  console.log("1")
   db.query(
     "INSERT INTO mensaje (ID_Remitente,ID_Destinatario,Contenido,Fecha) Values (?,?,?,?)",
     [nombre,destinatario,message,time],
@@ -369,6 +368,53 @@ db.query('DELETE from anuncio where start = ? and end = ?',
       res.send({err:err});
     }
   })
+});
+
+app.post("/notificacion-chat",(req,res)=>{
+  const remitente = req.body.remitente;
+  const destinatario = req.body.destinatario;
+  db.query(
+    "SELECT * from usuario Where Rut = ? or Rut = ?",
+    [destinatario,remitente],
+    (err,result)=>{
+
+      if (err) {
+        console.log(err);
+        res.send({err: err});
+      }
+
+      if (result.length > 0) {
+        var transporter = nodemailer.createTransport({
+          host: "smtp.gmail.com",
+          post: 465,
+          secure: true,
+          auth:{
+            user: "jardin.campanita.notificaciones@gmail.com",
+            pass: "sceyaqwusmleyrfq",
+          }
+        });
+      
+        var notificacionCertificado = {
+          from: "<jardin.campanita.notificaciones@gmail.com>",
+          to: result[1].Email,
+          subject: "Chat",
+          text: "El "+ result[0].Perfil + " " + result[0].Nombre + " te ha enviado un mensaje." 
+        }
+      
+        transporter.sendMail(notificacionCertificado,(error,info)=>{
+          if(error){
+            res.status(500).send(error.message);
+      
+          }
+          else{
+            console.log("email enviado")
+            res.status(200).jsonp(req.body);
+          }
+        });
+      }
+    }
+  )
+
 });
 
 servidor.listen(PORT, console.log(`Server started on port ${PORT}`));

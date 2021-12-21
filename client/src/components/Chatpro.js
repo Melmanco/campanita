@@ -61,6 +61,14 @@ function Chat(props) {
       setMessageList((list) => [...list, messageData]);
 
       Axios.post("http://localhost:3000/guarda-mensajes",{nombre: from, destinatario: to,message: currentMessage,time: mysql_date})
+      console.log(messageData.message)
+
+      var buscaarroba = messageData.message.toString()
+      var arroba = /(@)/g
+      
+      if(arroba.test(buscaarroba)){
+        Axios.post("http://localhost:3000/notificacion-chat",{remitente: from, destinatario: to})
+      }
       setCurrentMessage("");
     }
   };
@@ -74,7 +82,7 @@ function Chat(props) {
   return (
     <div className="chat-window">
       <div className="chat-header">
-        <p>Mensajes</p>
+        <p>{recibe}</p>
       </div>
       <div className="chat-body">
         <ScrollToBottom className="message-container">
@@ -82,7 +90,7 @@ function Chat(props) {
             return (
               <div
                 className="message"
-                id={nombre === messageContent.author ? "you" : "other"}
+                id={nombre === messageContent.author ? "other" : "you"}
               >
                 <div>
                   <div className="message-content">

@@ -322,4 +322,53 @@ app.post("/guarda-mensajes",(req,res)=>{
   )
 });
 
+app.post("/obtener-anuncios",(req, res) => {
+
+  db.query('SELECT * from anuncio', (err, result) => {
+
+    if (err) {
+      console.log(err);
+      res.send({err: err});
+  }
+  
+  if (result.length > 0) {
+    res.send(result);
+  }
+  })
+});
+
+app.post("/guardar-anuncio",(req, res) => {
+const title = req.body.title;
+const start = req.body.start;
+const end = req.body.end;
+
+db.query('INSERT INTO anuncio(title,start,end) VALUES (?,?,?)',
+  [title,start,end],
+  (err, result) => {
+
+    if (err) {
+      console.log(err);
+      res.send({err: err});
+    }
+
+    if (result.length > 0) {
+      res.send(result);
+    }
+  })
+});
+
+app.post("/eliminar-anuncio",(req,res)=>{
+const start = req.body.start.slice(0,-14);
+const end = req.body.end.slice(0,-14);
+
+db.query('DELETE from anuncio where start = ? and end = ?',
+  [start,end], 
+  (err,result)=>{
+    if(err){
+      console.log(err);
+      res.send({err:err});
+    }
+  })
+});
+
 servidor.listen(PORT, console.log(`Server started on port ${PORT}`));

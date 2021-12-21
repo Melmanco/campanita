@@ -8,7 +8,6 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Axios from 'axios';
-
 const locales = {
     "en-US": require("date-fns/locale/en-US")
 } 
@@ -21,34 +20,26 @@ const localizer = dateFnsLocalizer ({
     locales
 })
 
-const events = [
-    {
-        title: "Big Meeting",
-        allDay: true,
-        start: new Date(2021, 6, 0),
-        end: new Date(2021, 6, 0),
-    },
-    {
-        title: "Vacation",
-        start: new Date(2021, 6, 7),
-        end: new Date(2021, 6, 10),
-    },
-    {
-        title: "Conference",
-        start: new Date(2021, 6, 20),
-        end: new Date(2021, 6, 23),
-    },
-];
+
 
 
 
 export function Calendario(props) {
-
+    const [newEvent, setNewEvent] = useState({ title: "" , start: "", end: "" });
+    const [allEvents, setAllEvents] = useState([]);
     const {username} = props;
     const [perfil,setPerfil] = useState("");
     const [isRendered, setIsRendered] = useState(false);
-    
+
     useEffect(() => {
+        Axios.post("http://localhost:8080/calendario").then( (response) =>{
+            
+            if(response.status === 200){
+            
+                setAllEvents(response.data)
+            }
+        })
+
         Axios.post("http://localhost:3000/obtener-perfil", {
             username: username
         }).then((response) => {
@@ -62,12 +53,37 @@ export function Calendario(props) {
 
 
 
-    const [newEvent, setNewEvent] = useState({ title: "", start: "", end: "" });
-    const [allEvents, setAllEvents] = useState(events);
+   
 
     function handleAddEvent() {
-        setAllEvents([...allEvents, newEvent]);
+        console.log(newEvent.start)
+        console.log(newEvent.end)
+        Axios.post("http://localhost:8080/calendario",{
+            title: newEvent.title,
+            start: newEvent.start,
+            end: newEvent.end
+        }).then( (response) =>{
+            
+            if(response.status === 200){
+            
+                console.log("hola")
+            }
+        })
+        
     }
+    function handleDelEvent(){
+        Axios.post("http://localhost:8080/no-calendario",{
+            start: newEvent.start,
+            end: newEvent.end
+
+        }).then((response)=>{
+            if(response.status == 200){
+                console.log("chao")
+            }
+        })
+    }
+
+
     if (!isRendered)
         return(<div/>);
     else if (perfil === "Estudiante"){
@@ -95,18 +111,19 @@ export function Calendario(props) {
                     <button stlye={{ marginTop: "10px" }} onClick={handleAddEvent}>
                         Añadir evento
                     </button>
+
+
+                    <button stlye={{ marginTop: "10px" }} onClick={handleDelEvent} >
+                        Borrar evento
+                    </button>
                 </div>
                 <Calendar 
                     localizer={localizer} 
                     events={allEvents} 
                     startAccessor="start" 
                     endAccessor="end" 
-
                     style={{ height: 500, margin: "50px", backgroundColor: "#f0f0f0"}} 
                 />
             </div>)
     }
 };
-
-
-

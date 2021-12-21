@@ -31,8 +31,10 @@ CREATE TABLE Contiene (
 );
 
 CREATE TABLE Anuncio (
-	ID_Anuncio int NOT NULL PRIMARY KEY,
-	Descripcion varchar(2000) NOT NULL
+	ID_Anuncio int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	Title varchar(2000) NOT NULL,
+	Start date NOT NULL,
+	End Date NOT NULL
 );
 
 

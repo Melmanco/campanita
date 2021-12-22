@@ -5,6 +5,7 @@ const multer = require('multer');
 const mimeTypes = require('mime-types');
 const http = require("http");
 const nodemailer = require("nodemailer");
+const path = require('path');
 
 const app = express();
 const {Server} = require("socket.io");
@@ -46,9 +47,10 @@ io.on("connection", (socket)=>{
 
 // MySQL----------------------------------------------------------
 const db = mysql.createConnection({
-    user        : 'root',
-    host        : 'localhost',
-    database    : 'campanita',
+    user              : 'root',
+    host              : 'localhost',
+    database          : 'campanita',
+    multipleStatements: true
 });
 
 const PORT = process.env.PORT || 8080;
@@ -72,6 +74,14 @@ const upload = multer({
 
 
 
+app.post('/descargar-documento', (req,res) => {
+  const options = {
+    root: path.join(__dirname)
+  };
+
+  res.sendFile('uploads/' + req.body.ruta, options);
+  res.end();
+});
 
 app.post('/login', (req, res) => {
     const username = req.body.username;
@@ -98,11 +108,39 @@ app.post('/login', (req, res) => {
     );
 });
 
-app.post('/send-file', upload.single('file'), (req,res) =>{
-  res.end();
+app.post('/subir-documento', upload.single('file'), (req,res) => {
+
+  db.query(
+    "INSERT INTO documento (Ruta, Fecha) VALUES (?,?); INSERT INTO descarga (ID_Grupo) VALUES (?)",
+    [req.file.filename, req.body.date, req.body.grupo],
+    (err, result) => {
+      
+      if (err) {
+          console.log(err);
+          res.send({err: err});
+      }
+      
+      res.end();
+  });
 });
 
-app.post("/send-email",(req,res)=>{
+app.post('/obtener-documentos', (req,res) => {
+
+  db.query("SELECT ruta FROM documento, descarga WHERE documento.ID_Documento = descarga.ID_Documento AND ID_Grupo = ?",
+  [req.body.grupo],
+  (err, result) => {
+    if(err){
+      console.log(err);
+      res.send({err:err});
+    }
+    if(result.length > 0){
+      res.send(result);
+    }
+    res.end();
+  });
+});
+
+app.post("/send-email",(req,res) => {
   const username = req.body.username
   db.query(
     "SELECT nombre FROM usuario WHERE RUT = ?",

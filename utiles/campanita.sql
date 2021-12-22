@@ -73,14 +73,14 @@ CREATE TABLE Asiste (
 );
 
 CREATE TABLE Documento (
-	ID_Documento int NOT NULL PRIMARY KEY,
+	ID_Documento int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	Ruta varchar(120) NOT NULL,
 	Fecha DATETIME NOT NULL
 );
 
 CREATE TABLE Descarga (
 	ID_Grupo int NOT NULL,
-	ID_Documento int NOT NULL,
+	ID_Documento int NOT NULL AUTO_INCREMENT,
 	FOREIGN KEY (ID_Grupo) REFERENCES Grupo(ID_Grupo),
 	FOREIGN KEY (ID_Documento) REFERENCES Documento(ID_Documento)
 );

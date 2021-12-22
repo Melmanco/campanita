@@ -6,9 +6,11 @@ function Anuncios(props){
     const {username} = props
 
     return(
-        <div className="Body" >
+        <div className="Body">
             <div style={{height: 20}}></div>
-            <div className={'text-shortest'}> <div className={'text-center'}> Calendario </div></div>
+            <div className='calendario-rectangulo'>
+                <div className={'text-shortest'}> <div className={'text-center'}> Calendario </div> </div>
+            </div>    
             <Calendario username={username}/>
             
         </div>

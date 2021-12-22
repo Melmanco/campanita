@@ -28,11 +28,14 @@ function Certificado(props){
     
     return(
         <div className="Body">
+            <div style={{height: 20}}></div>
+            <div className={'text-certificado'} style = {{ marginLeft: "50px"}}> <div className={'text-center'}> Solicitud de certificado</div> </div>
+            <div style={{height: 20}}></div>
+            <div className={'text-bajada'} style = {{ marginLeft: "50px"}}> <div className={'text-center'}> Para solicitar el certificado de alumno regular presione el boton "enviar solicitud de certificado" la directora le enviara el certificado lo antes posible a su correo</div> </div>
             <div className = "row container">
-                <div className = "col mt-4">
-
-                    <button className = "btn btn-primary" onClick = {Enviar}>enviar certificado</button>
-
+                <div className = "col mt-4" > <div className={'text-center'}>
+                    <button className = "btn btn-primary" onClick = {Enviar}>enviar solicitud de certificado</button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -19,11 +19,6 @@ const localizer = dateFnsLocalizer ({
     getDay,
     locales
 })
-
-
-
-
-
 export function Calendario(props) {
     const [newEvent, setNewEvent] = useState({ title: "" , start: "", end: "" });
     const [allEvents, setAllEvents] = useState([]);
@@ -50,26 +45,22 @@ export function Calendario(props) {
         
         setIsRendered(true);
     });
-
-
-
-   
-
     function handleAddEvent() {
         console.log(newEvent.start)
         console.log(newEvent.end)
-        Axios.post("http://localhost:8080/guardar-anuncio",{
-            title: newEvent.title,
-            start: newEvent.start,
-            end: newEvent.end
-        }).then( (response) =>{
-            
-            if(response.status === 200){
-            
-                console.log("hola")
-            }
-        })
-        
+        if(perfil != "Estudiante"){
+            Axios.post("http://localhost:8080/guardar-anuncio",{
+                title: newEvent.title,
+                start: newEvent.start,
+                end: newEvent.end
+            }).then( (response) =>{
+                
+                if(response.status === 200){
+                
+                    console.log("hola")
+                }
+            })
+        }
     }
     function handleDelEvent(){
         Axios.post("http://localhost:8080/eliminar-anuncio",{
@@ -101,10 +92,9 @@ export function Calendario(props) {
     }
     else {
         return (
-            <div className="Calendar">
-                <h1>Calendario</h1>
-                <h2>Añadir nuevo evento</h2>
-                <div>
+            <div className="Body">
+                <h2 style={{ marginLeft: "25px" }}>Añadir nuevo evento</h2>
+                <div style={{ marginLeft: "25px" }}>
                     <input type="text" placeholder="Titulo" style={{ width: "20%", marginRight: "10px" }} value={newEvent.title} onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} />
                     <DatePicker placeholderText="Dia inicio" style={{ marginRight: "10px" }} selected={newEvent.start} onChange={(start) => setNewEvent({ ...newEvent, start })} />
                     <DatePicker placeholderText="Dia termino" selected={newEvent.end} onChange={(end) => setNewEvent({ ...newEvent, end })} />
@@ -122,8 +112,9 @@ export function Calendario(props) {
                     events={allEvents} 
                     startAccessor="start" 
                     endAccessor="end" 
-                    style={{ height: 500, margin: "50px", backgroundColor: "#f0f0f0"}} 
+                    style={{ height: 500, marginLeft: "75px", marginRight: "75px", backgroundColor: "#f0f0f0"}} 
                 />
+                <div style={{height: 75}}></div>
             </div>)
     }
 };

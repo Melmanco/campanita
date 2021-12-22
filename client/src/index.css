@@ -80,3 +80,8 @@
   cursor: pointer;
   display: block;
 }
+.text-certificado { font-size: 35px; font-weight: 550; font-family: 'Bungee Inline', cursive; }
+
+.text-bajada { font-size: 20px; font-weight: 550; font-family: 'Bungee Inline', }
+
+.text-shortest { font-size: 65px; font-weight: 550; font-family: 'Bungee Inline', cursive; }

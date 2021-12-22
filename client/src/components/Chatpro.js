@@ -6,6 +6,7 @@ function Chat(props) {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
   const [primera,setPrimera] = useState(true);
+  const [primermensaje,setPrimermensaje] = useState(true);
   const {socket,nombre,recibe,room,from,to} = props
   
   useEffect(()=>{
@@ -44,6 +45,11 @@ function Chat(props) {
 
 
   const sendMessage = async () => {
+
+    if(primermensaje){
+      Axios.post("http://localhost:3000/notificacion-chat",{remitente: from, destinatario: to})
+    }
+
     if (currentMessage !== "") {
       const messageData = {
         room: room,
@@ -63,11 +69,9 @@ function Chat(props) {
       Axios.post("http://localhost:3000/guarda-mensajes",{nombre: from, destinatario: to,message: currentMessage,time: mysql_date})
       console.log(messageData.message)
 
-      var buscaarroba = messageData.message.toString()
-      var arroba = /(@)/g
-      
-      if(arroba.test(buscaarroba)){
-        Axios.post("http://localhost:3000/notificacion-chat",{remitente: from, destinatario: to})
+      if(primermensaje){
+        Axios.post("http://localhost:3000/notificacion-chat",{remitente: from, destinatario: to});
+        setPrimermensaje(false);
       }
       setCurrentMessage("");
     }

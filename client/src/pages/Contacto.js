@@ -98,6 +98,7 @@ function Contacto(props){
                     <Select 
                         options={options} 
                         onChange={valores}
+                        
                         />
                 
                     <button onClick ={joinRoom}>Unirse a la sala</button>

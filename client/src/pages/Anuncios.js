@@ -10,7 +10,8 @@ function Anuncios(props){
             <div style={{height: 20}}></div>
             <div className='calendario-rectangulo'>
                 <div className={'text-shortest'}> <div className={'text-center'}> Calendario </div> </div>
-            </div>    
+            </div>
+            <div style={{height: 20}}></div>    
             <Calendario username={username}/>
             
         </div>

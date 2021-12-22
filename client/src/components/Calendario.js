@@ -8,6 +8,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Axios from 'axios';
+import "../index.css"
 const locales = {
     "en-US": require("date-fns/locale/en-US")
 } 
@@ -93,17 +94,19 @@ export function Calendario(props) {
     else {
         return (
             <div className="Body">
-                <h2 style={{ marginLeft: "25px" }}>Añadir nuevo evento</h2>
+                <h2 className = "añadir-rectangulo" style={{ marginLeft: "25px" }}> <div className={'text-center'}> Añadir nuevo evento</div></h2>
                 <div style={{ marginLeft: "25px" }}>
-                    <input type="text" placeholder="Titulo" style={{ width: "20%", marginRight: "10px" }} value={newEvent.title} onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} />
-                    <DatePicker placeholderText="Dia inicio" style={{ marginRight: "10px" }} selected={newEvent.start} onChange={(start) => setNewEvent({ ...newEvent, start })} />
-                    <DatePicker placeholderText="Dia termino" selected={newEvent.end} onChange={(end) => setNewEvent({ ...newEvent, end })} />
-                    <button className = "btn btn-primary" style={{ marginTop: "10px",marginBottom: "20px" }} onClick={handleAddEvent}>
+                    <input type="text" placeholder="Titulo" style={{ width: "17.3333%", marginRight: "10px" }} value={newEvent.title} onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} />
+                    <div className="customDatePickerWidth">
+                        <DatePicker placeholderText="Dia inicio" style={{ width: "28%", marginRight: "10px" }} selected={newEvent.start} onChange={(start) => setNewEvent({ ...newEvent, start })} />
+                    </div>
+                    <DatePicker placeholderText="Dia termino" style={{ width: "28%", marginRight: "10px" }} selected={newEvent.end} onChange={(end) => setNewEvent({ ...newEvent, end })} />
+                    <button className = "btn btn-primary" style={{width: "13%", marginTop: "10px",marginBottom: "20px" }} onClick={handleAddEvent}>
                         Añadir evento
                     </button>
 
 
-                    <button className = "btn btn-primary" style={{ marginTop: "10px",marginBottom: "20px"  }} onClick={handleDelEvent} >
+                    <button className = "btn btn-primary" style={{width: "13%" ,marginTop: "10px",marginBottom: "20px",marginLeft: "25px"  }} onClick={handleDelEvent} >
                         Borrar evento
                     </button>
                 </div>

@@ -78,7 +78,7 @@ export function Calendario(props) {
 
     if (!isRendered)
         return(<div/>);
-    else if (perfil === "Estudiante"){
+    else if (perfil === "Estudiante" || perfil === ""){
 
         return (
             <div className="Calendar">
@@ -112,7 +112,8 @@ export function Calendario(props) {
                 </div>
                 <Calendar 
                     localizer={localizer} 
-                    events={allEvents} 
+                    events={allEvents}
+                    onSelectEvent={event =>console.log(event)} 
                     startAccessor="start" 
                     endAccessor="end" 
                     style={{ height: 500, marginLeft: "75px", marginRight: "75px", backgroundColor: "#f0f0f0"}} 

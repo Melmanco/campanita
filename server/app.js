@@ -142,6 +142,7 @@ app.post('/obtener-documentos', (req,res) => {
 
 app.post("/send-email",(req,res) => {
   const username = req.body.username
+  const opcion = req.body.opcion
   db.query(
     "SELECT * FROM usuario WHERE RUT = ?",
     [username],
@@ -162,12 +163,25 @@ app.post("/send-email",(req,res) => {
           }
         });
       
-        var notificacionCertificado = {
+      
+        if(opcion == '1'){
+          var notificacionCertificado = {
           from: "<jardin.campanita.notificaciones@gmail.com>",
           to: "diego.c.080808@gmail.com",
           subject: "Certificado Alumno Regular",
           text: "El estudiante " + result[0].Nombre + " ha solicitado un certificado de alumno regular \n su mail es " + result[0].Email 
+          }
         }
+        else{
+          var notificacionCertificado = {
+            from: "<jardin.campanita.notificaciones@gmail.com>",
+            to: "diego.c.080808@gmail.com",
+            subject: "Certificado Alumno Regular",
+            text: "El estudiante " + result[0].Nombre + " ha solicitado un certificado de alumno regular impreso \n enviar fecha de cuando el certificado esta listo a " + result[0].Email 
+          }
+        }
+        
+        
       
         transporter.sendMail(notificacionCertificado,(error,info)=>{
           if(error){

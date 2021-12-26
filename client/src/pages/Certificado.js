@@ -9,9 +9,12 @@ function Certificado(props){
     const [perfil,setPerfil] = useState("");
     const [isRendered, setIsRendered] = useState(false);
     
-    const Enviar = () =>{
+    const Enviar1 = () =>{
 
-        Axios.post("http://localhost:8080/send-email",{username: username });
+        Axios.post("http://localhost:8080/send-email",{username: username,opcion: '1' });
+    }
+    const Enviar2 = ()=>{
+        Axios.post("http://localhost:8080/send-email",{username: username,opcion: '2'});
     }
 
     useEffect(() => {
@@ -25,19 +28,16 @@ function Certificado(props){
         
         setIsRendered(true);
     });
-    
+
     return(
         <div className="Body">
             <div style={{height: 20}}></div>
             <div className={'text-certificado'} style = {{ marginLeft: "50px"}}> <div className={'text-center'}> Solicitud de certificado</div> </div>
             <div style={{height: 20}}></div>
             <div className={'text-bajada'} style = {{ marginLeft: "50px"}}> <div className={'text-center'}> Para solicitar el certificado de alumno regular presione el boton "enviar solicitud de certificado", la directora le enviara el certificado lo antes posible a su correo</div> </div>
-            <div className = "row container">
-                <div className = "col mt-4" > <div className={'text-center'}>
-                    <button className = "btn btn-primary" onClick = {Enviar}>enviar solicitud de certificado</button>
-                    </div>
-                </div>
-            </div>
+            <button className = "certificado" onClick = {Enviar1}>enviar solicitud de certificado digital</button>
+            <button className = "certificado" onClick = {Enviar2}>enviar solicitud de certificado impreso</button>
+            
         </div>
     );
 }

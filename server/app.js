@@ -143,7 +143,7 @@ app.post('/obtener-documentos', (req,res) => {
 app.post("/send-email",(req,res) => {
   const username = req.body.username
   db.query(
-    "SELECT nombre FROM usuario WHERE RUT = ?",
+    "SELECT * FROM usuario WHERE RUT = ?",
     [username],
     (err, result) => {
       if (err) {
@@ -166,7 +166,7 @@ app.post("/send-email",(req,res) => {
           from: "<jardin.campanita.notificaciones@gmail.com>",
           to: "diego.c.080808@gmail.com",
           subject: "Certificado Alumno Regular",
-          text: "El estudiante " + result[0].nombre + " ha solicitado un certificado de alumno regular." 
+          text: "El estudiante " + result[0].Nombre + " ha solicitado un certificado de alumno regular \n su mail es " + result[0].Email 
         }
       
         transporter.sendMail(notificacionCertificado,(error,info)=>{

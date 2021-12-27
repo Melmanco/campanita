@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 import Header from './components/Header';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import PrivateRoute from './components/PrivateRoute';
 import Login from './pages/Login';
 import Files from './pages/Files';
 import Contacto from './pages/Contacto';
 import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
 import Certificado from './pages/Certificado';
 import Anuncios from './pages/Anuncios';
+import Clases from './pages/Clases';
 
 function App() {
 
@@ -55,6 +55,11 @@ function App() {
 
                         <Route path='/Anuncios' element=
                             {<Anuncios username={username}/>}
+                        />
+
+                        
+                        <Route path='/Clases' element=
+                            {<Clases username={username}/>}
                         />
                 </Routes>
 

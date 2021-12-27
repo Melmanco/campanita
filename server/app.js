@@ -507,4 +507,47 @@ app.post("/eliminar-anuncio",(req,res)=>{
 
 
 
+//Funciones para clases-------------------------------------------
+app.post("/guardar-clase", (req,res) => {
+  const titulo = req.body.titulo;
+  const link = req.body.link;
+  const fecha = req.body.fecha;
+  const grupo = req.body.grupo;
+
+  db.query(
+    "INSERT INTO clase (Titulo, Link, Fecha) VALUES (?,?,?); INSERT INTO asiste (ID_Grupo) VALUES (?)",
+    [titulo, link, fecha, grupo],
+    (err,result) => {
+      if (err) {
+        console.log(err);
+        res.send({err: err});
+      }
+    
+      res.end();
+    }
+  );
+
+});
+
+app.post("/obtener-clases", (req,res) => {
+  const grupo = req.body.grupo;
+
+  db.query(
+    "SELECT titulo, fecha, link FROM clase, asiste WHERE clase.ID_Clase = asiste.ID_Clase AND ID_Grupo = ?",
+    [grupo],
+    (err, result) => {
+      if(err){
+        console.log(err);
+        res.send({err:err});
+      }
+      if(result.length > 0){
+        res.send(result);
+      }
+      res.end();
+    });
+
+});
+// ---------------------------------------------------------------
+
+
 servidor.listen(PORT, console.log(`Server started on port ${PORT}`));

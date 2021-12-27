@@ -34,7 +34,7 @@ CREATE TABLE Anuncio (
 	ID_Anuncio int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	title varchar(2000) NOT NULL,
 	start date NOT NULL,
-	end Date NOT NULL
+	end date NOT NULL
 );
 
 
@@ -59,7 +59,7 @@ CREATE TABLE Agenda (
 );
 
 CREATE TABLE Clase (
-	ID_Clase int NOT NULL PRIMARY KEY,
+	ID_Clase int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	Titulo varchar(60) NOT NULL,
 	Fecha DATETIME NOT NULL,
 	Link varchar(120) NOT NULL
@@ -67,7 +67,7 @@ CREATE TABLE Clase (
 
 CREATE TABLE Asiste (
 	ID_Grupo int NOT NULL,
-	ID_Clase int NOT NULL,
+	ID_Clase int NOT NULL AUTO_INCREMENT,
 	FOREIGN KEY (ID_Grupo) REFERENCES Grupo(ID_Grupo),
 	FOREIGN KEY (ID_Clase) REFERENCES Clase(ID_Clase)
 );

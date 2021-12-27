@@ -92,7 +92,7 @@ function Files(props){
             null
             }
 
-            <lu> {list} </lu>
+            <ul> {list} </ul>
         </div>
     );
 }

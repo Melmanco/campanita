@@ -16,32 +16,8 @@ const socketio = require("socket.io");
 app.use(express.json());
 app.use(cors());
 
-var users = []
 
-// Server de chat ------------------------------------------------
-const io = new Server(servidor,{
-  cors: {
-    origin: "http//localhost:3000",
-    methods: ["GET","POST"],
-  },
- 
-});
 
-io.on("connection", (socket)=>{
-  /*console.log(`User Connected: ${socket.id}`);*/
-
-  socket.on("join_room",(data) =>{
-    socket.join(data);
-    console.log(`User with ID: ${socket.id} join room: ${data}`)
-  });
-  socket.on("send_message",(data)=>{
-    socket.to(data.room).emit("receive_message",data);
-  });
-  socket.on("disconnect",()=>{
-    /*console.log("User Disconnected",socket.id);*/
-  });
-});
-//----------------------------------------------------------------
 
 
 
@@ -54,26 +30,12 @@ const db = mysql.createConnection({
 });
 
 const PORT = process.env.PORT || 8080;
-// ---------------------------------------------------------------
-
-
-// Subida y descarga de documentos -------------------------------
-const storage = multer.diskStorage({
-  destination: function(req,file,cb) {
-    cb(null, 'uploads')
-  },
-  filename: function(req,file,cb){
-      cb(null, Date.now() + "-" + file.originalname);
-  }
-})
-
-const upload = multer({
-    storage: storage
-})
-// ---------------------------------------------------------------
+// --------------------------------------------------------------
 
 
 
+
+//login revisando los datos de la base de datos-------------------
 app.post('/descargar-documento', (req,res) => {
   const options = {
     root: path.join(__dirname)
@@ -107,6 +69,289 @@ app.post('/login', (req, res) => {
         
     );
 });
+//--------------------------------------------------------------
+
+
+
+
+//Funciones Mysql para la reloleccion de datos de los usuarios----
+
+app.post("/obtener-perfil", (req,res) => {
+  const username = req.body.username;
+  
+  
+  db.query(
+    "SELECT perfil FROM usuario WHERE RUT = ?",
+    [username],
+    (err, result) => {
+      
+      if (err) {
+          console.log(err);
+          res.send({err: err});
+      }
+      
+      if (result.length > 0) {
+        res.send(result[0].perfil);
+      }
+      res.end();
+    }
+    
+  );
+  
+});
+
+app.post("/obtener-nombre", (req,res) => {
+  const username = req.body.username;
+  
+  db.query(
+    "SELECT nombre FROM usuario WHERE RUT = ?",
+    [username],
+    (err, result) => {
+      
+      if (err) {
+          console.log(err);
+          res.send({err: err});
+      }
+      
+      if (result.length > 0) {
+        res.send(result[0].nombre);
+      }
+      res.end();
+    }
+  );
+  
+});
+
+app.post("/obtener-grupo", (req,res) => {
+  const username = req.body.username;
+  
+  
+  db.query(
+    "SELECT ID_Grupo FROM usuario, contiene WHERE usuario.RUT = contiene.RUT AND usuario.RUT = ?",
+    [parseInt(username)],
+    (err, result) => {
+      
+      if (err) {
+          console.log(err);
+          res.send({err: err});
+      }
+      
+      if (result.length > 0) {
+        res.send(String(result[0].ID_Grupo));
+      }
+      res.end();
+    }
+  );
+  
+});
+
+app.post("/obtener-rut-string",(req,res)=>{
+  const nombre = req.body.nombre;
+  console.log(nombre)
+  db.query(
+    "SELECT rut FROM usuario WHERE Nombre = ?",
+    [nombre],
+    (err, result) => {
+      
+      if (err) {
+          console.log(err);
+          res.send({err: err});
+      }
+      
+      if (result.length > 0) {
+        console.log(result[0].rut)
+        res.send(String(result[0].rut));
+      }
+      res.end();
+    }
+  )
+});   
+
+
+//----------------------------------------------------------------
+
+
+// Server de chat ------------------------------------------------
+var users = []
+const io = new Server(servidor,{
+  cors: {
+    origin: "http//localhost:3000",
+    methods: ["GET","POST"],
+  },
+ 
+});
+
+io.on("connection", (socket)=>{
+  /*console.log(`User Connected: ${socket.id}`);*/
+
+  socket.on("join_room",(data) =>{
+    socket.join(data);
+    console.log(`User with ID: ${socket.id} join room: ${data}`)
+  });
+  socket.on("send_message",(data)=>{
+    socket.to(data.room).emit("receive_message",data);
+  });
+  socket.on("disconnect",()=>{
+    /*console.log("User Disconnected",socket.id);*/
+  });
+});
+//----------------------------------------------------------------
+
+
+
+
+//Funciones para el Chat------------------------------------------
+app.post("/obtener-parvularias", (req,res)=>{
+  const grupo = req.body.grupo;
+
+  db.query(
+    "SELECT nombre FROM usuario, contiene WHERE usuario.RUT = contiene.RUT AND Perfil = 'Docente' AND ID_Grupo = ?",
+    [grupo],
+    (err,result)=>{
+      if(err){
+        console.log(err);
+        res.send({err:err});
+      }
+      if(result.length > 0){
+        res.send(result);
+      }
+      res.end();
+    }
+  )
+}
+);
+
+app.post("/obtener-alumnos",(req,res)=>{
+  const grupo = req.body.grupo;
+
+  db.query(
+    "SELECT nombre FROM usuario, contiene WHERE usuario.RUT = contiene.RUT AND Perfil = 'Estudiante' AND ID_Grupo = ?",
+    [grupo],
+    (err,result)=>{
+      if(err){
+        console.log(err);
+        res.send({err:err});
+      }
+      if(result.length > 0){
+        res.send(result);
+      }
+      res.end();
+    }
+  )
+});
+
+
+app.post("/obtener-mensajes",(req,res)=>{
+  const remitente = req.body.remitente;
+  const destinatario = req.body.destinatario;
+  db.query(
+    "SELECT * FROM mensaje WHERE ID_Remitente = ? AND ID_Destinatario = ? OR ID_Remitente = ? AND ID_Destinatario = ?",
+    [remitente,destinatario,destinatario,remitente],
+    (err, result) => {
+      if (err) {
+          console.log(err);
+          res.send({err: err});
+      }
+
+      if (result.length > 0) {
+          res.send(result);
+      }
+      res.end();
+    }
+  )
+    
+});
+
+app.post("/guarda-mensajes",(req,res)=>{
+  const nombre = req.body.nombre;
+  const destinatario = req.body.destinatario;
+  const message = req.body.message;
+  const time = req.body.time;
+  db.query(
+    "INSERT INTO mensaje (ID_Remitente,ID_Destinatario,Contenido,Fecha) Values (?,?,?,?)",
+    [nombre,destinatario,message,time],
+    (err,result)=>{
+      if(err){
+        console.log(err);
+        res.send({err: err});
+      }
+      res.end();
+    }
+  )
+});
+
+app.post("/notificacion-chat",(req,res)=>{
+  const remitente = req.body.remitente;
+  const destinatario = req.body.destinatario;
+  db.query(
+    "SELECT * from usuario Where Rut = ? or Rut = ?",
+    [destinatario,remitente],
+    (err,result)=>{
+
+      if (err) {
+        console.log(err);
+        res.send({err: err});
+      }
+
+      if (result.length > 0) {
+        var transporter = nodemailer.createTransport({
+          host: "smtp.gmail.com",
+          post: 465,
+          secure: true,
+          auth:{
+            user: "jardin.campanita.notificaciones@gmail.com",
+            pass: "sceyaqwusmleyrfq",
+          }
+        });
+      
+        var notificacionCertificado = {
+          from: "<jardin.campanita.notificaciones@gmail.com>",
+          to: result[1].Email,
+          subject: "Chat",
+          text: "El "+ result[0].Perfil + " " + result[0].Nombre + " te ha enviado un mensaje." 
+        }
+      
+        transporter.sendMail(notificacionCertificado,(error,info)=>{
+          if(error){
+            res.status(500).send(error.message);
+      
+          }
+          else{
+            console.log("email enviado")
+            res.status(200).jsonp(req.body);
+          }
+        });
+      }
+      res.end()
+    }
+  )
+
+});
+
+//----------------------------------------------------------------
+
+
+
+
+
+
+// Subida y descarga de documentos -------------------------------
+const storage = multer.diskStorage({
+  destination: function(req,file,cb) {
+    cb(null, 'uploads')
+  },
+  filename: function(req,file,cb){
+      cb(null, Date.now() + "-" + file.originalname);
+  }
+})
+
+const upload = multer({
+    storage: storage
+})
+// ---------------------------------------------------------------
+
+
+
 
 app.post('/subir-documento', upload.single('file'), (req,res) => {
 
@@ -140,6 +385,8 @@ app.post('/obtener-documentos', (req,res) => {
   });
 });
 
+
+// Mandar mails de certificados a la directora-------------------------------
 app.post("/send-email",(req,res) => {
   const username = req.body.username
   const opcion = req.body.opcion
@@ -198,181 +445,13 @@ app.post("/send-email",(req,res) => {
       res.end();
     }
   );
-
  
 
 });
 
-app.post("/obtener-perfil", (req,res) => {
-  const username = req.body.username;
-  
-  
-  db.query(
-    "SELECT perfil FROM usuario WHERE RUT = ?",
-    [username],
-    (err, result) => {
-      
-      if (err) {
-          console.log(err);
-          res.send({err: err});
-      }
-      
-      if (result.length > 0) {
-        res.send(result[0].perfil);
-      }
-      res.end();
-    }
-    
-  );
-  
-});
+// ---------------------------------------------------------------
 
-app.post("/obtener-nombre", (req,res) => {
-  const username = req.body.username;
-  
-  
-  db.query(
-    "SELECT nombre FROM usuario WHERE RUT = ?",
-    [username],
-    (err, result) => {
-      
-      if (err) {
-          console.log(err);
-          res.send({err: err});
-      }
-      
-      if (result.length > 0) {
-        res.send(result[0].nombre);
-      }
-      res.end();
-    }
-  );
-  
-});
-
-app.post("/obtener-grupo", (req,res) => {
-  const username = req.body.username;
-  
-  
-  db.query(
-    "SELECT ID_Grupo FROM usuario, contiene WHERE usuario.RUT = contiene.RUT AND usuario.RUT = ?",
-    [parseInt(username)],
-    (err, result) => {
-      
-      if (err) {
-          console.log(err);
-          res.send({err: err});
-      }
-      
-      if (result.length > 0) {
-        res.send(String(result[0].ID_Grupo));
-      }
-      res.end();
-    }
-  );
-  
-});
-
-app.post("/obtener-parvularias", (req,res)=>{
-  const grupo = req.body.grupo;
-
-  db.query(
-    "SELECT nombre FROM usuario, contiene WHERE usuario.RUT = contiene.RUT AND Perfil = 'Docente' AND ID_Grupo = ?",
-    [grupo],
-    (err,result)=>{
-      if(err){
-        console.log(err);
-        res.send({err:err});
-      }
-      if(result.length > 0){
-        res.send(result);
-      }
-      res.end();
-    }
-  )
-}
-);
-
-app.post("/obtener-alumnos",(req,res)=>{
-  const grupo = req.body.grupo;
-
-  db.query(
-    "SELECT nombre FROM usuario, contiene WHERE usuario.RUT = contiene.RUT AND Perfil = 'Estudiante' AND ID_Grupo = ?",
-    [grupo],
-    (err,result)=>{
-      if(err){
-        console.log(err);
-        res.send({err:err});
-      }
-      if(result.length > 0){
-        res.send(result);
-      }
-      res.end();
-    }
-  )
-});
-
-app.post("/obtener-rut-string",(req,res)=>{
-  const nombre = req.body.nombre;
-  console.log(nombre)
-  db.query(
-    "SELECT rut FROM usuario WHERE Nombre = ?",
-    [nombre],
-    (err, result) => {
-      
-      if (err) {
-          console.log(err);
-          res.send({err: err});
-      }
-      
-      if (result.length > 0) {
-        console.log(result[0].rut)
-        res.send(String(result[0].rut));
-      }
-      res.end();
-    }
-  )
-});                                            
-
-app.post("/obtener-mensajes",(req,res)=>{
-  const remitente = req.body.remitente;
-  const destinatario = req.body.destinatario;
-  db.query(
-    "SELECT * FROM mensaje WHERE ID_Remitente = ? AND ID_Destinatario = ? OR ID_Remitente = ? AND ID_Destinatario = ?",
-    [remitente,destinatario,destinatario,remitente],
-    (err, result) => {
-      if (err) {
-          console.log(err);
-          res.send({err: err});
-      }
-
-      if (result.length > 0) {
-          res.send(result);
-      }
-      res.end();
-    }
-  )
-    
-});
-
-app.post("/guarda-mensajes",(req,res)=>{
-  const nombre = req.body.nombre;
-  const destinatario = req.body.destinatario;
-  const message = req.body.message;
-  const time = req.body.time;
-  db.query(
-    "INSERT INTO mensaje (ID_Remitente,ID_Destinatario,Contenido,Fecha) Values (?,?,?,?)",
-    [nombre,destinatario,message,time],
-    (err,result)=>{
-      if(err){
-        console.log(err);
-        res.send({err: err});
-      }
-      res.end();
-    }
-  )
-});
-
+//Funciones para Anuncios y Calendarios---------------------------
 app.get("/obtener-anuncios",(req, res) => {
   db.query('SELECT * from anuncio', (err, result) => {
 
@@ -424,52 +503,8 @@ app.post("/eliminar-anuncio",(req,res)=>{
   })
 });
 
-app.post("/notificacion-chat",(req,res)=>{
-  const remitente = req.body.remitente;
-  const destinatario = req.body.destinatario;
-  db.query(
-    "SELECT * from usuario Where Rut = ? or Rut = ?",
-    [destinatario,remitente],
-    (err,result)=>{
+// ---------------------------------------------------------------
 
-      if (err) {
-        console.log(err);
-        res.send({err: err});
-      }
 
-      if (result.length > 0) {
-        var transporter = nodemailer.createTransport({
-          host: "smtp.gmail.com",
-          post: 465,
-          secure: true,
-          auth:{
-            user: "jardin.campanita.notificaciones@gmail.com",
-            pass: "sceyaqwusmleyrfq",
-          }
-        });
-      
-        var notificacionCertificado = {
-          from: "<jardin.campanita.notificaciones@gmail.com>",
-          to: result[1].Email,
-          subject: "Chat",
-          text: "El "+ result[0].Perfil + " " + result[0].Nombre + " te ha enviado un mensaje." 
-        }
-      
-        transporter.sendMail(notificacionCertificado,(error,info)=>{
-          if(error){
-            res.status(500).send(error.message);
-      
-          }
-          else{
-            console.log("email enviado")
-            res.status(200).jsonp(req.body);
-          }
-        });
-      }
-      res.end()
-    }
-  )
-
-});
 
 servidor.listen(PORT, console.log(`Server started on port ${PORT}`));

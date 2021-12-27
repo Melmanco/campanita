@@ -384,6 +384,7 @@ app.get("/obtener-anuncios",(req, res) => {
     if (result.length > 0) {
       res.send(result);
     }
+    res.end()
   })
 });
 

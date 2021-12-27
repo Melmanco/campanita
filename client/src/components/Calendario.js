@@ -34,7 +34,7 @@ export function Calendario(props) {
         Axios.get("http://localhost:8080/obtener-anuncios").then( (response) =>{
             
             if(response.status === 200){
-            
+                
                 setAllEvents(response.data)
             }
         })

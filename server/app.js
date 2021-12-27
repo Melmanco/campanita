@@ -404,6 +404,7 @@ app.post("/guardar-anuncio",(req, res) => {
       if (result.length > 0) {
         res.send(result);
       }
+      res.end()
     })
 });
 
@@ -418,6 +419,7 @@ app.post("/eliminar-anuncio",(req,res)=>{
         console.log(err);
         res.send({err:err});
       }
+    res.end()
   })
 });
 
@@ -463,6 +465,7 @@ app.post("/notificacion-chat",(req,res)=>{
           }
         });
       }
+      res.end()
     }
   )
 

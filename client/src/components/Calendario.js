@@ -9,6 +9,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Axios from 'axios';
 import "../index.css"
+import { is } from 'date-fns/locale';
 const locales = {
     "en-US": require("date-fns/locale/en-US")
 } 
@@ -26,8 +27,10 @@ export function Calendario(props) {
     const {username} = props;
     const [perfil,setPerfil] = useState("");
     const [isRendered, setIsRendered] = useState(false);
+    const [isChanged, setChanged] = useState(true);
 
     useEffect(() => {
+        console.log(isChanged);
         Axios.get("http://localhost:8080/obtener-anuncios").then( (response) =>{
             
             if(response.status === 200){
@@ -39,40 +42,45 @@ export function Calendario(props) {
         Axios.post("http://localhost:3000/obtener-perfil", {
             username: username
         }).then((response) => {
-            console.log(response.data);
             if(response.data === "Directora" || response.data === "Docente" || response.data === "Estudiante")
                 setPerfil(response.data);
         });
         
         setIsRendered(true);
-    });
-    function handleAddEvent() {
-        console.log(newEvent.start)
-        console.log(newEvent.end)
-        if(perfil != "Estudiante"){
+        setChanged(false);
+
+    },[isChanged]);
+    const  handleAddEvent = async () => {
+        var fecha = new Date(newEvent.start)
+        fecha.setDate(fecha.getDate()+1);
+         if(perfil != "Estudiante"){
             Axios.post("http://localhost:8080/guardar-anuncio",{
                 title: newEvent.title,
                 start: newEvent.start,
-                end: newEvent.end
+                end: fecha
             }).then( (response) =>{
-                
                 if(response.status === 200){
                 
                     console.log("hola")
                 }
             })
         }
+        setChanged(isChanged => !isChanged)
     }
-    function handleDelEvent(){
+    const handleDelEvent = async () => {
+        var fecha = new Date(newEvent.start)
+        fecha.setDate(fecha.getDate()+1);
         Axios.post("http://localhost:8080/eliminar-anuncio",{
             start: newEvent.start,
-            end: newEvent.end
+            end: fecha
 
         }).then((response)=>{
+            
             if(response.status == 200){
                 console.log("chao")
             }
         })
+        setChanged(isChanged => !isChanged)
     }
 
 
@@ -98,9 +106,8 @@ export function Calendario(props) {
                 <div style={{ marginLeft: "25px" }}>
                     <input type="text" placeholder="Titulo" style={{ width: "17.3333%", marginRight: "10px" }} value={newEvent.title} onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} />
                     <div className="customDatePickerWidth">
-                        <DatePicker placeholderText="Dia inicio" style={{ width: "28%", marginRight: "10px" }} selected={newEvent.start} onChange={(start) => setNewEvent({ ...newEvent, start })} />
+                        <DatePicker placeholderText="Fecha evento" style={{ width: "28%", marginRight: "10px" }} selected={newEvent.start} onChange={(start) => setNewEvent({ ...newEvent, start })} />
                     </div>
-                    <DatePicker placeholderText="Dia termino" style={{ width: "28%", marginRight: "10px" }} selected={newEvent.end} onChange={(end) => setNewEvent({ ...newEvent, end })} />
                     <button className = "btn btn-primary" style={{width: "13%", marginTop: "10px",marginBottom: "20px" }} onClick={handleAddEvent}>
                         Añadir evento
                     </button>

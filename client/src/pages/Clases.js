@@ -11,6 +11,8 @@ function Clases(props){
     const [titulo,setTitulo] = useState("");
     const [fecha,setFecha] = useState(null);
     const [list,setList] = useState(null);
+    const [isChanged, setChanged] = useState(true);
+
 
     const handleUpload = (e) => {
         Axios.post("http://localhost:3000/guardar-clase", {
@@ -19,6 +21,7 @@ function Clases(props){
             fecha: fecha,
             grupo: grupo
         });
+        setChanged(true);
     }
 
     useEffect(() => {
@@ -54,18 +57,20 @@ function Clases(props){
 
             }
             setList(classList);
-        });
+        setChanged(false);
+        },[isChanged]);
 
     });
 
     return(
         <div className="Body">
+            <div style={{height: 20}}></div>
             {perfil === 'Directora' || perfil === 'Docente'?
             <div>
                 <input type="url" placeholder="Link" onChange={(e) => {setLink(e.target.value)}} />
                 <input type="text" placeholder="Título" onChange={(e) => {setTitulo(e.target.value)}} />
                 <input type="date" placeholder="Fecha" onChange={(e) => {setFecha(e.target.value)}} />
-                <button onClick={(e)=> {handleUpload(e)}}>Publicar clase</button>
+                <button className = "subir"  onClick={(e)=> {handleUpload(e)}}>Publicar clase</button>
             </div>
             :
             null

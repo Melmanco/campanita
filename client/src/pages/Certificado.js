@@ -69,6 +69,8 @@ function Certificado(props){
     });
 
     return(
+        
+
         <div className="Body">
             <div style={{height: 20}}></div>
             <div className={'text-certificado'} style = {{ marginLeft: "50px"}}> <div className={'text-center'}> Solicitud de certificado</div> </div>
@@ -79,7 +81,7 @@ function Certificado(props){
             
             <button className = "certificado" onClick = {Enviar1}>enviar solicitud de certificado digital</button>
             <button className = "certificado" onClick = {Enviar2}>enviar solicitud de certificado impreso</button>
-            
+    
         </div>
     );
 }

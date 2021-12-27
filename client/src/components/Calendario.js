@@ -10,6 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Axios from 'axios';
 import "../index.css"
 import { is } from 'date-fns/locale';
+import swal from 'sweetalert';
 const locales = {
     "en-US": require("date-fns/locale/en-US")
 } 
@@ -50,43 +51,66 @@ export function Calendario(props) {
         setChanged(false);
 
     },[isChanged]);
-    const  handleAddEvent = async () => {
-        var fecha = new Date(newEvent.start)
-        fecha.setDate(fecha.getDate()+1);
-         if(perfil != "Estudiante"){
-            Axios.post("http://localhost:8080/guardar-anuncio",{
-                title: newEvent.title,
-                start: newEvent.start,
-                end: fecha
-            }).then( (response) =>{
-                if(response.status === 200){
-                
-                    console.log("hola")
-                }
-            })
-        }
-        setChanged(isChanged => !isChanged)
-    }
-    const handleDelEvent = async () => {
-        var fecha = new Date(newEvent.start)
-        fecha.setDate(fecha.getDate()+1);
-        Axios.post("http://localhost:8080/eliminar-anuncio",{
-            start: newEvent.start,
-            end: fecha
 
-        }).then((response)=>{
-            
-            if(response.status == 200){
-                console.log("chao")
+
+
+    const  handleAddEvent = async () => {
+        swal({
+            title: "Crear Anuncio",
+            text: "¿Estas segura de crear un nuevo Anuncio?",
+            icon: "info",
+            buttons: ["No","Si"]
+        }).then(respuesta =>{
+                if(respuesta){
+                    var fecha = new Date(newEvent.start)
+                    fecha.setDate(fecha.getDate()+1);
+                    Axios.post("http://localhost:8080/guardar-anuncio",{
+                        title: newEvent.title,
+                        start: newEvent.start,
+                        end: fecha
+                    }).then( (response) =>{
+                        if(response.status === 200){
+                            
+                            console.log("hola")
+                        }
+                    })
+                    setChanged(isChanged => !isChanged)
             }
-        })
-        setChanged(isChanged => !isChanged)
+    })
+    }
+
+
+
+
+    const handleDelEvent = async () => {
+        swal({
+            title: "Eliminar Anuncio",
+            text: "¿Estas segura de eliminar el Anuncio en esta fecha?",
+            icon: "info",
+            buttons: ["No","Si"]
+        }).then(respuesta =>{
+            if(respuesta){
+                var fecha = new Date(newEvent.start)
+                fecha.setDate(fecha.getDate()+1);
+                Axios.post("http://localhost:8080/eliminar-anuncio",{
+                    start: newEvent.start,
+                    end: fecha
+
+                }).then((response)=>{
+                    
+                    if(response.status == 200){
+                        console.log("chao")
+                    }
+                })
+                setChanged(isChanged => !isChanged)
+        }
+    })
     }
 
 
     if (!isRendered)
         return(<div/>);
-    else if (perfil === "Estudiante" || perfil === ""){
+    else if (perfil === "Estudiante" || perfil === "" || perfil ==="Docente"){
 
         return (
             <div className="Calendar">
@@ -120,7 +144,6 @@ export function Calendario(props) {
                 <Calendar 
                     localizer={localizer} 
                     events={allEvents}
-                    onSelectEvent={event =>console.log(event)} 
                     startAccessor="start" 
                     endAccessor="end" 
                     style={{ height: 500, marginLeft: "75px", marginRight: "75px", backgroundColor: "#f0f0f0"}} 

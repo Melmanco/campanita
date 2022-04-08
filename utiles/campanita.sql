@@ -9,7 +9,7 @@ CREATE TABLE Usuario (
 );
 
 CREATE TABLE Mensaje (
-	ID_Mensaje int NOT NULL PRIMARY KEY,
+	ID_Mensaje int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	ID_Remitente int NOT NULL,
 	ID_Destinatario int NOT NULL,
 	Contenido varchar(2000) NOT NULL,

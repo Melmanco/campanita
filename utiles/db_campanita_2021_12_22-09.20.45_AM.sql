@@ -1,6 +1,8 @@
 INSERT INTO grupo(ID_Grupo, Nombre) values(1, "grupo 1");
 INSERT INTO usuario(RUT, Nombre, Perfil, Contraseña, Email) values(238099660, "Ricardo Flores", "Estudiante", "88792397", "238099660@outlook.com");
 INSERT INTO contiene(ID_Grupo, RUT) values(1, 238099660);
+INSERT INTO usuario(RUT, Nombre, Perfil, Contraseña, Email) values(123456789, "Sandra trujillo", "Directora", "123456789", "123456789@outlook.com");
+INSERT INTO contiene(ID_Grupo, RUT) values(1, 123456789);
 INSERT INTO usuario(RUT, Nombre, Perfil, Contraseña, Email) values(231806756, "Lucas Flores", "Estudiante", "69590805", "231806756@outlook.com");
 INSERT INTO contiene(ID_Grupo, RUT) values(1, 231806756);
 INSERT INTO usuario(RUT, Nombre, Perfil, Contraseña, Email) values(239136976, "Isidora González", "Estudiante", "25071978", "239136976@outlook.com");
@@ -193,3 +195,5 @@ INSERT INTO usuario(RUT, Nombre, Perfil, Contraseña, Email) values(230321254, "
 INSERT INTO contiene(ID_Grupo, RUT) values(5, 230321254);
 INSERT INTO usuario(RUT, Nombre, Perfil, Contraseña, Email) values(136521652, "Alberto Sánchez", "Docente", "99699961", "136521652@outlook.com");
 INSERT INTO contiene(ID_Grupo, RUT) values(5, 136521652);
+INSERT INTO grupo(ID_Grupo, Nombre) values(1, "grupo 1");
+INSERT INTO usuario(RUT, Nombre, Perfil, Contraseña, Email) values(238099660, "Ricardo Flores", "Directora", "88792397", "238099660@outlook.com");

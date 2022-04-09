@@ -300,7 +300,7 @@ app.post("/notificacion-chat",(req,res)=>{
           secure: true,
           auth:{
             user: "jardin.campanita.notificaciones@gmail.com",
-            pass: "sceyaqwusmleyrfq",
+            pass: "iuelioybeswzmuwf",
           }
         });
       
@@ -406,7 +406,7 @@ app.post("/send-email",(req,res) => {
           secure: true,
           auth:{
             user: "jardin.campanita.notificaciones@gmail.com",
-            pass: "sceyaqwusmleyrfq",
+            pass: "iuelioybeswzmuwf",
           }
         });
       
